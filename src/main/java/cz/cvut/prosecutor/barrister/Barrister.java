@@ -1,0 +1,18 @@
+package cz.cvut.prosecutor.barrister;
+///////////////////////////////////////////////////////////////////////////////
+//
+//Author: Jiri Fryc
+//
+//Licence: AGPL v3
+//
+//This file is part of Barrister, which is part of Prosecutor. 
+///////////////////////////////////////////////////////////////////////////////
+
+
+public class Barrister {
+
+
+    public static void main(String... args)
+    {
+    }
+}
