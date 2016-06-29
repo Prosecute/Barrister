@@ -46,8 +46,8 @@ public class Tokens {
             {
                 fields[i].setInt(null,startIndex++);
             }
-            return startIndex;
         }
+        return startIndex;
     }
 
 
