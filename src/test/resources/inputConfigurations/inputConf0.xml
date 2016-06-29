@@ -1,0 +1,32 @@
+<!--Only for Unit testing-->
+<Configuration>
+    <SubjectsLocations>
+
+    </SubjectsLocations>
+    <Trials>
+        <Trial>
+            <Language name="Java" version="1.8"/>
+            <Extensions>
+                <Extension>java</Extension>
+                <Extension>java2</Extension>
+            </Extensions>
+            <BaseCode>
+                <Locations>
+                    <Location path="/basecodeRepository/" direct="true">
+                        <Exclusive>repo*</Exclusive>
+                        <Exclusive>repa*</Exclusive>
+                        <Exclude>repo01</Exclude>
+                        <Exclude>repo1*</Exclude>
+                    </Location>
+                </Locations>
+                <Extensions>
+                    <Extension>java3</Extension>
+                </Extensions>
+            </BaseCode>
+            <Test sensitivity="300"/>
+            <Output outputSourceCode="true">
+                <Percent>66.666</Percent>
+            </Output>
+        </Trial>
+    </Trials>
+</Configuration>

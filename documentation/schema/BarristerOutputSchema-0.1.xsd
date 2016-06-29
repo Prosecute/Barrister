@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1">
+
+    <xs:element name="Test">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded" minOccurs="1">
+                <xs:element name="Subjects">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="1">
+                            <xs:element maxOccurs="unbounded" name="Subject" type="Subject"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Matches" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="1">
+                            <xs:element maxOccurs="unbounded" name="Match" type="Match"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Subject">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="Files" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="1">
+                        <xs:element maxOccurs="unbounded" name="File" type="File"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="FileTokens">
+                <xs:complexType>
+                    <xs:sequence minOccurs="1">
+                        <xs:element maxOccurs="unbounded" name="FileToken" type="TokenFile"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute form="unqualified" id="SubjectID" inheritable="false" name="SubjectID"
+            type="xs:nonNegativeInteger" use="required"/>
+        <xs:attribute name="TokenCount" type="xs:nonNegativeInteger" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="File">
+        <xs:choice maxOccurs="unbounded" minOccurs="0">
+            <xs:element minOccurs="0" name="Content" type="xs:string"/>
+        </xs:choice>
+        <xs:attribute name="LocalFileID" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="Name" use="required" type="xs:normalizedString"/>
+        <xs:attribute name="URL" type="xs:anyURI"/>
+    </xs:complexType>
+    <xs:complexType name="Match">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="TokenMatches" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence minOccurs="1">
+                        <xs:element maxOccurs="unbounded" name="TokenMatch" type="TokenMatch"
+                            minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="FirstSubjectID" type="xs:nonNegativeInteger" use="required"/>
+        <xs:attribute name="MatchProbability"/>
+    </xs:complexType>
+    <xs:complexType name="TokenMatch">
+        <xs:all>
+            <xs:element name="FirstSubject" type="TokenFile"/>
+            <xs:element name="SecondSubject" type="TokenFile"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="MatchedSubject">
+        <xs:attribute name="SubjectID" type="xs:nonNegativeInteger" use="required"/>
+        <xs:attribute name="MatchingTokenCount" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+    <xs:complexType name="TokenFile">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Token" type="Token"/>
+        </xs:sequence>
+        <xs:attribute name="LocalFileID" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="StartLine" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="EndLine" type="xs:nonNegativeInteger" use="optional"/>
+        <xs:attribute name="StartChar" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="EndChar" type="xs:nonNegativeInteger"/>
+    </xs:complexType>
+    <xs:complexType name="Token">
+        <xs:attribute name="Name" type="xs:normalizedString"/>
+    </xs:complexType>
+</xs:schema>
