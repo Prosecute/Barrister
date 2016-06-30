@@ -17,9 +17,11 @@ import java.lang.reflect.Field;
 public class Tokens {
 
 
+    public static int GENERIC_TOKEN=1;
+
     public static void generateIndex(){
 
-        int i=1;
+        int i=2;
         try {
             i=generateIndexFor(Class.class,i);
             i=generateIndexFor(Conditions.class,i);
@@ -39,10 +41,14 @@ public class Tokens {
             if(fields[i].isAnnotationPresent(Duplicate.class))
             {
                 Duplicate duplicate=(Duplicate)fields[i].getAnnotation(Duplicate.class);
-                fields[i].setInt(null,duplicate.from().getDeclaredField(duplicate.name().equals("")?fields[i].getName():duplicate.name()).getInt(null));
+                int value=duplicate.from().getDeclaredField(duplicate.name().equals("")?fields[i].getName():duplicate.name()).getInt(null);
+                if(value==0) {
+                    fields[i].setInt(null, startIndex++);
+                    duplicate.from().getDeclaredField(duplicate.name().equals("")?fields[i].getName():duplicate.name()).setInt(null,startIndex-1);
+                }
 
             }
-            else
+            else if(fields[i].getInt(null)==0)
             {
                 fields[i].setInt(null,startIndex++);
             }
@@ -51,45 +57,94 @@ public class Tokens {
     }
 
 
-    public static class Class
+    public static class Class extends Tokens
     {
-        public static int CLASS_CONSTRUCTOR_START , CLASS_CONSTRUCTOR_END;
-        public static int CLASS_METHOD_START , CLASS_METHOD_END;
+        public static int CLASS_CONSTRUCTOR_START , CLASS_CONSTRUCTOR_STOP;
+        public static int CLASS_METHOD_START , CLASS_METHOD_STOP;
+        public static int ENUM_START, ENUM_STOP, ENUM_CONSTANT;
+        public static int PACKAGE;
+        public static int IMPORT;
+        public static int ANNOTATION;
     }
-    public static class Conditions
+    public static class Conditions extends Tokens
     {
         public static int IF_START,IF_STOP;
-        public static int WHILE_START,WHILE_STOP;
+
+        @Link(from = Conditions.class,name = "DO_WHILE_START",type = Link.LinkType.hard)
+        public static int WHILE_START;
+        @Link(from = Conditions.class,name = "DO_WHILE_STOP",type = Link.LinkType.hard)
+        public static int WHILE_STOP;
+
+        @Link(from = Conditions.class,name = "WHILE_START",type = Link.LinkType.hard)
+        public static int DO_WHILE_START;
+        @Link(from = Conditions.class,name = "WHILE_STOP",type = Link.LinkType.hard)
+        public static int DO_WHILE_STOP;
         public static int FOR_START,FOR_STOP;
         public static int SWITCH_START,SWITCH_STOP;
+        public static int SWITCH_CASE;
 
         public static int CONDITIONAL_EXPRESSION_START;
     }
-    public static class Expressions
+    public static class Expressions extends Tokens
     {
         @Duplicate(from = Conditions.class)
-        public static int CONDITIONAL_EXPRESSION_START;
-        public static int ASSIGNMENT_EXPRESSION_START;
+        public static int CONDITIONAL;
+        public static int ASSIGNMENT;
     }
 
-    public static class Statements
+    public static class Statements extends Tokens
     {
         public static int ASSERT;
         public static int CONTINUE;
         public static int RETURN;
         public static int THROW;
+        @Duplicate(from = Conditions.class, name = "SWITCH_CASE")
+        public static int CASE;
+        public static int BREAK;
 
+    }
+    public static class Invocations extends Tokens
+    {
+        public static int INVOKE;
+    }
+    public static class Blocks extends Tokens
+    {
+        public static int GENERIC_BLOCK_START,GENERIC_BLOCK_STOP;
         public static int SYNCHRONIZED_START,SYNCHRONIZED_STOP;
+        @Link(from = Conditions.class,name = "TRY_WITH_RESOURCE_START",type = Link.LinkType.hard)
+        public static int TRY_START;
+        @Link(from = Conditions.class,name = "TRY_WITH_RESOURCE_STOP",type = Link.LinkType.hard)
+        public static int TRY_STOP;
+        @Link(from = Conditions.class,name = "TRY_START",type = Link.LinkType.hard)
+        public static int TRY_WITH_RESOURCE_START;
+        @Link(from = Conditions.class,name = "TRY_STOP",type = Link.LinkType.hard)
+        public static int TRY_WITH_RESOURCE_STOP;
+        public static int FINALLY_START,FINALLY_STOP;
+        public static int CATCH_START,CATCH_STOP;
     }
 
-    public static class ReturnTypes
+    public static class ReturnTypes extends Tokens
     {
         public static int RETURN_VOID;
     }
 
+    public static class Initializations extends Tokens
+    {
+        public static int ARRAY_INIT_START,ARRAY_INIT_STOP, CONSTANT;
+    }
+
+
     public @interface Duplicate
     {
-        java.lang.Class from();
+        java.lang.Class<? extends Tokens> from();
         String name() default "";
+    }
+    public @interface Link
+    {
+        java.lang.Class<? extends Tokens> from();
+        String name();
+        LinkType type();
+
+        public enum LinkType {hard,soft}
     }
 }
