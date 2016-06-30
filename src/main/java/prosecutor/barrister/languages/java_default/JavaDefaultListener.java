@@ -34,7 +34,7 @@ public class JavaDefaultListener extends Java8BaseListener {
 
     @Override
     public void exitConstructorDeclaration(Java8Parser.ConstructorDeclarationContext ctx) {
-        T.addToken(Tokens.Class.CLASS_CONSTRUCTOR_END,ctx.getStop());
+        T.addToken(Tokens.Class.CLASS_CONSTRUCTOR_STOP,ctx.getStop());
     }
     //SEGMENT END: CLASS CONSTRUCTOR
 
@@ -61,7 +61,7 @@ public class JavaDefaultListener extends Java8BaseListener {
 
     @Override
     public void exitMethodDeclaration(Java8Parser.MethodDeclarationContext ctx) {
-        T.addToken(Tokens.Class.CLASS_METHOD_END,ctx.getStop());
+        T.addToken(Tokens.Class.CLASS_METHOD_STOP,ctx.getStop());
     }
     //SEGMENT END: METHOD
 
