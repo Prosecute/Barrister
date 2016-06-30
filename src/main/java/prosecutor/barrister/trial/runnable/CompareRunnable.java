@@ -22,12 +22,13 @@ public class CompareRunnable implements Runnable {
         this.tested=tested;
         this.compared=compared;
     }
-    @Override
+
     public void run() {
 
         for(Submission test:tested)
             for(Submission compare:compared)
                 if(test!=compare)
+                {}
 
     }
 }
