@@ -33,13 +33,15 @@ public class JavaParser extends Parser {
         for(Path file:files) {
             try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file.toFile()))) {
                 inputStream = new ANTLRInputStream(stream);
-                Java8Lexer lexer=new Java8Lexer(inputStream);
-                CommonTokenStream commonTokenStream=new CommonTokenStream(lexer);
-                Java8Parser parser=new Java8Parser(commonTokenStream);
-                Java8Parser.CompilationUnitContext unitContext=parser.compilationUnit();
-                ParseTreeWalker ptw=new ParseTreeWalker();
-                for(int i=0;i<unitContext.getChildCount();i++)
-                    ptw.walk(new JavaDefaultListener(file.toString(),output),unitContext.getChild(i));
+                Java8Lexer lexer = new Java8Lexer(inputStream);
+                CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+                Java8Parser parser = new Java8Parser(commonTokenStream);
+                Java8Parser.CompilationUnitContext unitContext = parser.compilationUnit();
+                ParseTreeWalker ptw = new ParseTreeWalker();
+                for (int i = 0; i < unitContext.getChildCount(); i++) {
+                    SubmissionTokens.SubmissionFileTokens tokens=output.getSubmissionFileTokens(file.toString());
+                    ptw.walk(new JavaDefaultListener(tokens), unitContext.getChild(i));
+                }
 
             } catch (FileNotFoundException e) {
                 //TODO
