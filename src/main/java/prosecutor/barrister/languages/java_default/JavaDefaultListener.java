@@ -258,22 +258,22 @@ public class JavaDefaultListener extends Java8BaseListener {
 
     @Override
     public void enterNormalInterfaceDeclaration(Java8Parser.NormalInterfaceDeclarationContext ctx) {
-        super.enterNormalInterfaceDeclaration(ctx);
+        T.addToken(Tokens.Class.INTERFACE_START,ctx.getStart());
     }
 
     @Override
     public void exitNormalInterfaceDeclaration(Java8Parser.NormalInterfaceDeclarationContext ctx) {
-        super.exitNormalInterfaceDeclaration(ctx);
+        T.addToken(Tokens.Class.INTERFACE_STOP,ctx.getStop());
     }
 
     @Override
     public void enterNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) {
-        super.enterNormalClassDeclaration(ctx);
+        T.addToken(Tokens.Class.CLASS_START,ctx.getStart());
     }
 
     @Override
     public void exitNormalClassDeclaration(Java8Parser.NormalClassDeclarationContext ctx) {
-        super.exitNormalClassDeclaration(ctx);
+        T.addToken(Tokens.Class.CLASS_STOP,ctx.getStop());
     }
 
     @Override

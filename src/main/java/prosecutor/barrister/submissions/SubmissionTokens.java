@@ -33,6 +33,11 @@ public class SubmissionTokens {
         mapped.values().forEach(list-> Collections.sort(list));
     }
 
+    public SubmissionFileTokens getSubmissionFileTokens(String filename)
+    {
+        return new SubmissionFileTokens(filename,this);
+    }
+
     public static class SubmissionFileTokens
     {
         private String filename;

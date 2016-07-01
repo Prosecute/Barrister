@@ -62,6 +62,8 @@ public class Tokens {
         public static int CLASS_CONSTRUCTOR_START , CLASS_CONSTRUCTOR_STOP;
         public static int CLASS_METHOD_START , CLASS_METHOD_STOP;
         public static int ENUM_START, ENUM_STOP, ENUM_CONSTANT;
+        public static int CLASS_START, CLASS_STOP;
+        public static int INTERFACE_START,INTERFACE_STOP;
         public static int PACKAGE;
         public static int IMPORT;
         public static int ANNOTATION;
