@@ -1,5 +1,6 @@
 .idea
 build
+out
 .gradle
 Barrister.ipr
 Barrister.iws

@@ -1,4 +1,4 @@
-package submissionsRepository.submission1;
+package language.java.submissionsRepository.submission0.src;
 
 public class Java8File {
 
@@ -28,7 +28,7 @@ public class Java8File {
     {
         return value;
     }
-    
+
     public Java8File getNext() {
         return next;
     }
