@@ -68,7 +68,7 @@ public class CompareTask extends Task {
         //Execute trials (synchronously)
         for(Trial trial:trials)
         {
-            trial.execute(executorService,queue);
+            //trial.execute(executorService,queue);
         }
 
     }
