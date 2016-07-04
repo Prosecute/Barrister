@@ -12,6 +12,7 @@ package prosecutor.barrister.languages;
 import com.sun.org.apache.bcel.internal.generic.RET;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
+import javax.lang.model.type.NullType;
 import java.lang.reflect.Field;
 
 public class Tokens {
@@ -19,22 +20,41 @@ public class Tokens {
 
     public static int GENERIC_TOKEN=1;
 
+    private static java.lang.Class<? extends Tokens>[] tokenClass= new java.lang.Class[]{
+            Class.class,Conditions.class,Expressions.class,Statements.class,
+            ReturnTypes.class,Blocks.class,Initializations.class,Invocations.class
+    };
+
     public static void generateIndex(){
 
         int i=2;
         try {
-            i=generateIndexFor(Class.class,i);
-            i=generateIndexFor(Conditions.class,i);
-            i=generateIndexFor(Expressions.class,i);
-            i=generateIndexFor(Statements.class,i);
-            i=generateIndexFor(RETURN.class,i);
+            for(java.lang.Class<? extends Tokens> clazz:tokenClass)
+                i=generateIndexFor(clazz,i);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
-    private static int generateIndexFor(java.lang.Class clazz,int startIndex) throws NoSuchFieldException, IllegalAccessException {
+
+    /**
+     * For testing only
+     */
+    public static void resetIndexs()
+    {
+        for(java.lang.Class<? extends Tokens> clazz:tokenClass)
+        {
+            Field[] fields=clazz.getDeclaredFields();
+            for(Field field:fields)
+                try {
+                    field.setInt(null,0);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+    private static int generateIndexFor(java.lang.Class<? extends Tokens> clazz,int startIndex) throws NoSuchFieldException, IllegalAccessException {
         Field[] fields=clazz.getDeclaredFields();
         for(int i=0;i<fields.length;i++)
         {
@@ -105,10 +125,12 @@ public class Tokens {
         public static int BREAK;
 
     }
+
     public static class Invocations extends Tokens
     {
         public static int INVOKE;
     }
+    @Category(name = "Blocks", descriptionL = "token.category.blocks",color = "#AACCAA")
     public static class Blocks extends Tokens
     {
         public static int GENERIC_BLOCK_START,GENERIC_BLOCK_STOP;
@@ -125,16 +147,22 @@ public class Tokens {
         public static int CATCH_START,CATCH_STOP;
     }
 
+
+    @Category(name = "Return types", descriptionL = "token.category.returns",color = "#8080A0")
     public static class ReturnTypes extends Tokens
     {
+        @Description(name = "Return void",descriptionL = "token.returns.void")
         public static int RETURN_VOID;
     }
 
+
+    @Category(name = "Initializations", descriptionL = "token.category.init", color = "#FF0000")
     public static class Initializations extends Tokens
     {
         public static int ARRAY_INIT_START,ARRAY_INIT_STOP, CONSTANT;
     }
 
+    public static class Null extends Tokens{}
 
     public @interface Duplicate
     {
@@ -148,5 +176,20 @@ public class Tokens {
         LinkType type();
 
         public enum LinkType {hard,soft}
+    }
+    public @interface Description
+    {
+        java.lang.Class<? extends Tokens> endingFrom() default Null.class;
+        String endingName() default "";
+        String descriptionL();
+        String name();
+        String category() default "";
+        String color() default "";
+    }
+    public @interface Category
+    {
+        String name();
+        String descriptionL();
+        String color();
     }
 }
