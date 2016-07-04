@@ -35,7 +35,7 @@ public class TokenConvertTest {
         JavaParser parser=new JavaParser();
         File file=new File("src/test/resources/language/java/tokenTesting/source.java");
         Set<Path> paths=new HashSet<>();
-        paths.add(file.toPath());
+        paths.add(file.toPath()); 
         SubmissionTokens tokens=parser.parseTokens(paths);
         tokens.sort();
 
