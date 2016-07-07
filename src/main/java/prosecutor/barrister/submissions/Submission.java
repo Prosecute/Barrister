@@ -10,6 +10,7 @@ package prosecutor.barrister.submissions;
 
 
 import prosecutor.barrister.filters.PathFilter;
+import prosecutor.barrister.submissions.tokens.TokensMapping;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -24,7 +25,7 @@ public class Submission {
 
     private Path location;
 
-    private SubmissionTokens submissionTokens;
+    private TokensMapping tokensMapping;
 
     public Submission(Path submissionLocation)
     {
@@ -32,13 +33,13 @@ public class Submission {
         name=submissionLocation.getName(submissionLocation.getNameCount()-1).toString();
     }
 
-    public void setSubmissionTokens(SubmissionTokens tokens)
+    public void setSubmissionTokens(TokensMapping tokens)
     {
-        submissionTokens=tokens;
+        tokensMapping=tokens;
     }
-    public SubmissionTokens getSubmissionTokens()
+    public TokensMapping getSubmissionTokens()
     {
-        return submissionTokens;
+        return tokensMapping;
     }
 
     public Set<Path> getFiles() throws IOException {
