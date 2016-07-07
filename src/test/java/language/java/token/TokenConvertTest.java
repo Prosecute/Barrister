@@ -2,11 +2,9 @@ package language.java.token;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import prosecutor.barrister.languages.Tokens;
 import prosecutor.barrister.languages.java_default.JavaParser;
-import prosecutor.barrister.submissions.SubmissionTokens;
 
 import java.io.File;
 import java.nio.file.Path;
