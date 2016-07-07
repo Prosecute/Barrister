@@ -12,15 +12,15 @@ package prosecutor.barrister.languages.java_default;
 import prosecutor.barrister.grammar.Java8BaseListener;
 import prosecutor.barrister.grammar.Java8Parser;
 import prosecutor.barrister.languages.Tokens;
-import prosecutor.barrister.submissions.SubmissionTokens;
+import prosecutor.barrister.submissions.tokens.TokensMapping;
 
 public class JavaDefaultListener extends Java8BaseListener {
 
     //TODO enterExprMethodExpressionList
 
-    SubmissionTokens.SubmissionFileTokens T;
+    TokensMapping.TokensMappingInserter T;
 
-    public JavaDefaultListener(SubmissionTokens.SubmissionFileTokens tokens)
+    public JavaDefaultListener(TokensMapping.TokensMappingInserter tokens)
     {
         this.T=tokens;
     }

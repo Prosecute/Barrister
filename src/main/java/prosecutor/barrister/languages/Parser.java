@@ -9,8 +9,7 @@ package prosecutor.barrister.languages;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-import prosecutor.barrister.submissions.Submission;
-import prosecutor.barrister.submissions.SubmissionTokens;
+import prosecutor.barrister.submissions.tokens.TokensMapping;
 
 import java.nio.file.Path;
 import java.util.Set;
@@ -28,7 +27,7 @@ public abstract class Parser {
         return errors;
     }
 
-    public abstract SubmissionTokens parseTokens(Set<Path> files);
+    public abstract TokensMapping parseTokens(Set<Path> files);
 
     public static class ParserException extends Exception
     {}

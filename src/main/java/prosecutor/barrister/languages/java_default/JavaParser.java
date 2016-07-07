@@ -15,8 +15,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import prosecutor.barrister.grammar.Java8Lexer;
 import prosecutor.barrister.grammar.Java8Parser;
 import prosecutor.barrister.languages.Parser;
-import prosecutor.barrister.submissions.Submission;
-import prosecutor.barrister.submissions.SubmissionTokens;
+import prosecutor.barrister.submissions.tokens.TokensMapping;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -25,10 +24,10 @@ import java.util.Set;
 public class JavaParser extends Parser {
 
     @Override
-    public SubmissionTokens parseTokens(Set<Path> files){
+    public TokensMapping parseTokens(Set<Path> files){
 
         //TODO solve storing errors in SubmissionTokens
-        SubmissionTokens output=new SubmissionTokens();
+        TokensMapping output=new TokensMapping();
         ANTLRInputStream inputStream;
         for(Path file:files) {
             try (BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file.toFile()))) {
@@ -39,7 +38,7 @@ public class JavaParser extends Parser {
                 Java8Parser.CompilationUnitContext unitContext = parser.compilationUnit();
                 ParseTreeWalker ptw = new ParseTreeWalker();
                 for (int i = 0; i < unitContext.getChildCount(); i++) {
-                    SubmissionTokens.SubmissionFileTokens tokens=output.getSubmissionFileTokens(file.toString());
+                    TokensMapping.TokensMappingInserter tokens=output.getInserter(file.toString());
                     ptw.walk(new JavaDefaultListener(tokens), unitContext.getChild(i));
                 }
 
