@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    xmlns="http://prosecute.github.io/XMLSchema/Core"
+    targetNamespace="http://prosecute.github.io/XMLSchema/Core" vc:minVersion="1.1" version="0.1">
+    <xs:complexType name="Match">
+        <xs:sequence>
+            <xs:element name="TrialMatches">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="TrialMatch">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="TokenMatches">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="RangeMatch">
+                                                  <xs:complexType>
+                                                  <xs:attribute name="startLineA"
+                                                  type="xs:nonNegativeInteger"/>
+                                                  <xs:attribute name="startLineB"
+                                                  type="xs:nonNegativeInteger"/>
+                                                  <xs:attribute name="startCharA"
+                                                  type="xs:nonNegativeInteger"/>
+                                                  <xs:attribute name="startCharB"/>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="ConsoleOutput">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="ConsoleLine" type="ConsoleLine"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Errors">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="Error">
+                                                  <xs:complexType>
+                                                  <xs:simpleContent>
+                                                  <xs:extension base="xs:string">
+                                                  <xs:attribute name="level"/>
+                                                  </xs:extension>
+                                                  </xs:simpleContent>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="refTrial"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="refSubjectA"/>
+        <xs:attribute name="refSubjectB"/>
+    </xs:complexType>
+    <xs:complexType name="TrialConfiguration">
+        <xs:sequence>
+            <xs:element name="Language">
+                <xs:complexType>
+                    <xs:attribute name="name"/>
+                    <xs:attribute name="version"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Extensions">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element maxOccurs="unbounded" minOccurs="1" name="Extension"
+                            type="Extension"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="BaseCode">
+                <xs:complexType>
+                    <xs:choice maxOccurs="unbounded">
+                        <xs:element maxOccurs="1" minOccurs="1" name="Locations">
+                            <xs:complexType>
+                                <xs:sequence maxOccurs="unbounded">
+                                    <xs:element maxOccurs="unbounded" name="Location"
+                                        type="Location"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element maxOccurs="1" minOccurs="0" name="Extensions">
+                            <xs:complexType>
+                                <xs:all maxOccurs="1">
+                                    <xs:element maxOccurs="unbounded" minOccurs="1" name="Extension"
+                                        type="Extension"/>
+                                </xs:all>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Output">
+                <xs:complexType>
+                    <xs:choice maxOccurs="1" minOccurs="1">
+                        <xs:element maxOccurs="1" minOccurs="0" name="Count"
+                            type="xs:nonNegativeInteger"/>
+                        <xs:element maxOccurs="1" minOccurs="0" name="Percent" type="Percent"/>
+                    </xs:choice>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="trialID"/>
+        <xs:attribute name="trialType"/>
+        <xs:attribute default="1" name="sensitivity" type="xs:float"/>
+        <xs:attribute default="20" name="minMatch" type="xs:positiveInteger"/>
+        <xs:attribute default="false" name="outputSourceCode" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    <xs:complexType name="ConsoleLine">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="level">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="INFO"/>
+                            <xs:enumeration value="DEBUG"/>
+                            <xs:enumeration value="WARN"/>
+                            <xs:enumeration value="ERROR"/>
+                            <xs:enumeration value="FATAL"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="time" type="xs:integer"/>
+                <xs:attribute name="source" type="xs:normalizedString"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="Token">
+        <xs:sequence>
+            <xs:element name="Description" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="tokenID"/>
+        <xs:attribute name="name"/>
+    </xs:complexType>
+    <xs:complexType name="TokenPosition">
+        <xs:attribute name="refToken"/>
+        <xs:attribute name="file"/>
+        <xs:attribute name="line"/>
+        <xs:attribute name="position"/>
+        <xs:attribute name="length"/>
+    </xs:complexType>
+    <xs:simpleType name="Percent">
+        <xs:annotation>
+            <xs:documentation>The percent type specifies a percentage from 0 to 100.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="100"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType final="restriction" name="PartURI">
+        <xs:annotation>
+            <xs:documentation>Part of URI without slashes.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI">
+            <xs:pattern value="[^/\\]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Extension">
+        <xs:annotation>
+            <xs:documentation>File extension.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="TestMode">
+        <xs:annotation>
+            <xs:documentation>Mode for testing. testOnly means this file will be compared with others. compareOnly means this file will be used to test others.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="testOnly"/>
+            <xs:enumeration value="compareOnly"/>
+            <xs:enumeration value="testAndCompare"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Location">
+        <xs:annotation>
+            <xs:documentation>Location of file/folder with exclude/include filtering.</xs:documentation>
+        </xs:annotation>
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Exclude" type="PartURI"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Include" type="PartURI"/>
+        </xs:choice>
+        <xs:attribute name="path" type="xs:anyURI" use="required"/>
+        <xs:attribute default="false" name="direct" type="xs:boolean"/>
+    </xs:complexType>
+    <xs:complexType name="SubjectsLocation">
+        <xs:annotation>
+            <xs:documentation>URI of file/folder which will be used in testing/comparing.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="Location">
+                <xs:attribute default="testAndCompare" name="mode" type="TestMode" use="optional">
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

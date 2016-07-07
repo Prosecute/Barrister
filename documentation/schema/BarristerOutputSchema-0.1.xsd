@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
-    vc:minVersion="1.1">
-
+    xmlns:pr="http://prosecute.github.io/XMLSchema/Core" vc:minVersion="1.1">
+    <xs:import namespace="http://prosecute.github.io/XMLSchema/Core"
+        schemaLocation="BarristerCoreSchema.xsd"/>
     <xs:element name="Test">
         <xs:complexType>
             <xs:choice maxOccurs="unbounded" minOccurs="1">
@@ -15,9 +16,7 @@
                 </xs:element>
                 <xs:element name="Matches" minOccurs="0">
                     <xs:complexType>
-                        <xs:sequence maxOccurs="1">
-                            <xs:element maxOccurs="unbounded" name="Match" type="Match"/>
-                        </xs:sequence>
+                        <xs:sequence maxOccurs="1"> </xs:sequence>
                     </xs:complexType>
                 </xs:element>
             </xs:choice>
@@ -89,4 +88,37 @@
     <xs:complexType name="Token">
         <xs:attribute name="Name" type="xs:normalizedString"/>
     </xs:complexType>
+    <xs:element name="TestResult">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Trials">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Trial" type="pr:TrialConfiguration"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Tokens"/>
+                <xs:element name="Matches">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Match" type="pr:Match"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Errors">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Error">
+                                <xs:complexType>
+                                    <xs:attribute name="errorType"/>
+                                    <xs:attribute name="level"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>
