@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import prosecutor.barrister.languages.Tokens;
 import prosecutor.barrister.languages.java_default.JavaParser;
+import prosecutor.barrister.submissions.tokens.TokensMapping;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -34,8 +35,7 @@ public class TokenConvertTest {
         File file=new File("src/test/resources/language/java/tokenTesting/source.java");
         Set<Path> paths=new HashSet<>();
         paths.add(file.toPath()); 
-        SubmissionTokens tokens=parser.parseTokens(paths);
-        tokens.sort();
+        TokensMapping tokens=parser.parseTokens(paths);
 
     }
 }
