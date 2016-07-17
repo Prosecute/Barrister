@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
-    vc:minVersion="1.1">
+    vc:minVersion="1.1" xmlns:pr="http://prosecute.github.io/XMLSchema/Core">
+    <xs:import namespace="http://prosecute.github.io/XMLSchema/Core"
+        schemaLocation="BarristerCoreSchema.xsd"/>
     <xs:element name="Configuration">
         <xs:complexType>
             <xs:choice maxOccurs="unbounded">
-                <xs:element name="SubjectsLocations" maxOccurs="1" minOccurs="1">
+                <xs:element name="Suites" maxOccurs="1" minOccurs="1">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
-                            <xs:element name="SubjectsLocation" type="SubjectsLocation"
-                                maxOccurs="unbounded" minOccurs="1"/>
+                            <xs:element name="Suite" type="pr:Suite" maxOccurs="unbounded"
+                                minOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="Trials" maxOccurs="1" minOccurs="1">
                     <xs:complexType>
                         <xs:sequence maxOccurs="unbounded">
-                            <xs:element name="Trial" type="Trial" maxOccurs="unbounded"
-                                minOccurs="1"/>
+                            <xs:element name="Trial" type="pr:TrialConfiguration"
+                                maxOccurs="unbounded" minOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -26,9 +28,11 @@
                         <xs:sequence maxOccurs="unbounded">
                             <xs:element maxOccurs="unbounded" name="Option">
                                 <xs:complexType>
-                                    <xs:attribute name="name" type="xs:normalizedString"
-                                        use="required"/>
-                                    <xs:attribute name="value" type="xs:string" use="required"/>
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="name" type="xs:normalizedString"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>

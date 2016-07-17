@@ -22,7 +22,12 @@
                                                   type="xs:nonNegativeInteger"/>
                                                   <xs:attribute name="startCharA"
                                                   type="xs:nonNegativeInteger"/>
-                                                  <xs:attribute name="startCharB"/>
+                                                  <xs:attribute name="startCharB"
+                                                  type="xs:nonNegativeInteger"/>
+                                                  <xs:attribute name="endLineA"/>
+                                                  <xs:attribute name="endCharA"/>
+                                                  <xs:attribute name="endLineB"/>
+                                                  <xs:attribute name="endCharB"/>
                                                   </xs:complexType>
                                                 </xs:element>
                                             </xs:sequence>
@@ -51,15 +56,17 @@
                                         </xs:complexType>
                                     </xs:element>
                                 </xs:sequence>
-                                <xs:attribute name="refTrial"/>
+                                <xs:attribute name="refTrial" type="xs:nonNegativeInteger"/>
+                                <xs:attribute name="match"/>
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="refSubjectA"/>
-        <xs:attribute name="refSubjectB"/>
+        <xs:attribute name="refSubjectA" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="refSubjectB" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="match"/>
     </xs:complexType>
     <xs:complexType name="TrialConfiguration">
         <xs:sequence>
@@ -194,7 +201,7 @@
         <xs:attribute name="path" type="xs:anyURI" use="required"/>
         <xs:attribute default="false" name="direct" type="xs:boolean"/>
     </xs:complexType>
-    <xs:complexType name="SubjectsLocation">
+    <xs:complexType name="Suite">
         <xs:annotation>
             <xs:documentation>URI of file/folder which will be used in testing/comparing.</xs:documentation>
         </xs:annotation>

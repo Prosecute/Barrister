@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="16.0">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="oxygenProject.xpr">
+        <file name="BarristerCoreSchema.xsd"/>
+        <file name="BarristerInputSchema-0.1.xsd"/>
+        <file name="BarristerOutputSchema-0.1.xsd"/>
+    </projectTree>
+</project>

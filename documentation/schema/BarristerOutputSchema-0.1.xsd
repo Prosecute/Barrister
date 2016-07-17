@@ -92,13 +92,26 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="Trials">
+                    <xs:annotation>
+                        <xs:documentation>Contains trials configurations.</xs:documentation>
+                    </xs:annotation>
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="Trial" type="pr:TrialConfiguration"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="Tokens"/>
+                <xs:element name="Subjects"/>
+                <xs:element name="Tokens">
+                    <xs:annotation>
+                        <xs:documentation>[Optional] Contains all code tokens used in this testing.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Token" type="pr:Token"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="Matches">
                     <xs:complexType>
                         <xs:sequence>
@@ -119,6 +132,16 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
+            <xs:attribute name="createdTime" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation>Timestamp format. Time of creating report.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="barristerVersion" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Version of barrister used for test.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
 </xs:schema>
