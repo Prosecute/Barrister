@@ -16,7 +16,28 @@ repositories {
 dependencies {     
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
+    jaxb group: 'com.sun.xml.bind', name: 'jaxb-xjc', version: '2.2.11'
     testCompile group: 'org.testng', name: 'testng', version: '6.9.9'
 
     antlr "org.antlr:antlr4:4.5"
 }
+
+configurations {
+    jaxb
+}
+
+task jaxb () {
+    jaxbTargetDir = file( "${buildDir}/generated-src/jaxb" )
+    doLast {
+        jaxbTargetDir.mkdirs()
+        ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath)
+        ant.jaxbTargetDir = jaxbTargetDir
+
+        ant.xjc(
+                destdir: '${jaxbTargetDir}',
+                package: 'prosecutor.barrister.jaxb',
+                schema: 'src/main/resources/wsdl/v1.10/MyServiceSchema.xsd'
+        )
+    }
+}
+compileJava.dependsOn jaxb
