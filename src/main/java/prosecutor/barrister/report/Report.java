@@ -1,5 +1,8 @@
 package prosecutor.barrister.report;
 
+import prosecutor.barrister.jaxb.Match;
+import prosecutor.barrister.jaxb.TestResult;
+
 import java.nio.file.Path;
 
 /**
@@ -8,4 +11,10 @@ import java.nio.file.Path;
 public class Report {
     private Path outputFile;
 
+    public void test()
+    {
+    }
+
 }
+
+

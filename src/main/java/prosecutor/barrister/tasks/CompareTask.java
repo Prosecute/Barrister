@@ -9,8 +9,9 @@ package prosecutor.barrister.tasks;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.submissions.SubmissionManager;
-import prosecutor.barrister.tasks.options.OptionBuilderXML;
+import prosecutor.barrister.tasks.options.Option;
 import prosecutor.barrister.trial.Trial;
 
 import java.io.File;
@@ -88,7 +89,8 @@ public class CompareTask extends Task {
             {
                 if(param.endsWith(".xml"))
                 {
-                    OptionBuilderXML.fromFile(new File(param));
+                    Configuration configuration=null; //TODO
+                    configuration.
                 }
                 //TODO
             }
