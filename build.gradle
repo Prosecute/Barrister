@@ -6,38 +6,97 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 idea.module {
-    excludeDirs -= file(buildDir) }
+    excludeDirs -= file(buildDir)
+    sourceDirs += file("$buildDir/generated-src/antlr/main")
+    sourceDirs += file("$buildDir/generated-src/jaxb/main")
+    testSourceDirs += file("$buildDir/generated-src/antlr/test")
+    testSourceDirs += file("$buildDir/generated-src/jaxb/test")
+}
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
-dependencies {     
+configurations {
+    jaxb
+}
+dependencies {
+    jaxb 'com.sun.xml.bind:jaxb-impl:2.2.6'
+    jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.6'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
-    jaxb group: 'com.sun.xml.bind', name: 'jaxb-xjc', version: '2.2.11'
     testCompile group: 'org.testng', name: 'testng', version: '6.9.9'
 
     antlr "org.antlr:antlr4:4.5"
 }
 
-configurations {
-    jaxb
-}
 
-task jaxb () {
-    jaxbTargetDir = file( "${buildDir}/generated-src/jaxb" )
+task jaxb {
+    def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )
+    def jaxbTargetMainDir = file( "${buildDir}/generated-src/jaxb/main" )
+    def jaxbTargetTestDir = file( "${buildDir}/generated-src/jaxb/test" )
+    outputs.dir jaxbTargetDir
+    jaxbTargetMainDir.mkdirs()
+    jaxbTargetTestDir.mkdirs()
+    ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath)
+
+    def folder = new File("${buildDir}/downloaded")
+    def f = new File("${buildDir}/downloaded/BarristerReportSchema.xsd")
+    def f2 = new File("${buildDir}/downloaded/ProsecutorCoreSchema.xsd")
+    def f3 = new File("${buildDir}/downloaded/BarristerInputSchema.xsd")
+    if(!folder.exists()) {
+        folder.mkdirs()
+        new URL('https://prosecute.github.io/XMLSchema/BarristerReportSchema.xsd').withInputStream { i ->
+            f.withOutputStream {
+                it << i
+            }
+        }
+        new URL('https://prosecute.github.io/XMLSchema/ProsecutorCoreSchema.xsd').withInputStream { i ->
+            f2.withOutputStream {
+                it << i
+            }
+        }
+        new URL('https://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd').withInputStream { i ->
+            f3.withOutputStream {
+                it << i
+            }
+        }
+    }
     doLast {
-        jaxbTargetDir.mkdirs()
-        ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath)
-        ant.jaxbTargetDir = jaxbTargetDir
-
+        ant.jaxbTargetDir = jaxbTargetMainDir
         ant.xjc(
-                destdir: '${jaxbTargetDir}',
+                destdir: "${jaxbTargetMainDir}",
                 package: 'prosecutor.barrister.jaxb',
-                schema: 'src/main/resources/wsdl/v1.10/MyServiceSchema.xsd'
-        )
+                schema: f
+        ){arg(value:"-disableXmlSecurity")}
+        ant.xjc(
+                destdir: "${jaxbTargetMainDir}",
+                package: 'prosecutor.barrister.jaxb',
+                schema: f2
+        ){arg(value:"-disableXmlSecurity")}
+        ant.xjc(
+                destdir: "${jaxbTargetMainDir}",
+                package: 'prosecutor.barrister.jaxb',
+                schema: f3
+        ){arg(value:"-disableXmlSecurity")}
+        ant.jaxbTargetDir = jaxbTargetTestDir
+        ant.xjc(
+                destdir: "${jaxbTargetTestDir}",
+                package: 'prosecutor.barrister.jaxb',
+                schema: f
+        ){arg(value:"-disableXmlSecurity")}
+        ant.xjc(
+                destdir: "${jaxbTargetTestDir}",
+                package: 'prosecutor.barrister.jaxb',
+                schema: f2
+        ){arg(value:"-disableXmlSecurity")}
+        ant.xjc(
+                destdir: "${jaxbTargetTestDir}",
+                package: 'prosecutor.barrister.jaxb',
+                schema: f3
+        ){arg(value:"-disableXmlSecurity")}
     }
 }
+
 compileJava.dependsOn jaxb
