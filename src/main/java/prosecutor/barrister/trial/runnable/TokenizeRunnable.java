@@ -26,6 +26,10 @@ public class TokenizeRunnable implements Runnable{
     public TokenizeRunnable(Set<Submission> submissions)
     {
         this.submissions=submissions;
+    }
+
+    @Override
+    public void run() {
         for(Submission sub:submissions)
         {
             JavaParser parser=new JavaParser();
@@ -37,10 +41,6 @@ public class TokenizeRunnable implements Runnable{
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void run() {
 
     }
 }

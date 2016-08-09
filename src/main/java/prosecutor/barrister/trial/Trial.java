@@ -29,6 +29,17 @@ public class Trial {
 
     private Language language;
 
+    private int trialID;
+
+    public int getTrialID()
+    {
+        return trialID;
+    }
+    public void setTrialID(int trialID)
+    {
+        this.trialID=trialID;
+    }
+
     public void setLanguage(Language language)
     {
         this.language=language;

@@ -78,7 +78,7 @@ initPhase:
 
     public static class Match
     {
-        int PositionTokenA,PositionTokenB,Length;
+        public int PositionTokenA,PositionTokenB,Length;
         public Match()
         {}
         public Match(int posA,int posB,int length)
