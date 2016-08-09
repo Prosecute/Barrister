@@ -31,8 +31,23 @@ dependencies {
     antlr "org.antlr:antlr4:4.5"
 }
 
+sourceSets {
+    main {
+        java {                                 
+            srcDir 'build/generated-src/jaxb/main' 
+            srcDir 'build/generated-src/antlr/main'   
+        }
+    } 
+    test {
+        java {                                   
+            srcDir 'build/generated-src/jaxb/test'
+            srcDir 'build/generated-src/antlr/test'
+        }
+    }
+}
 
-task jaxb {
+
+task jaxb {          
     def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )
     def jaxbTargetMainDir = file( "${buildDir}/generated-src/jaxb/main" )
     def jaxbTargetTestDir = file( "${buildDir}/generated-src/jaxb/test" )
@@ -97,6 +112,8 @@ task jaxb {
                 schema: f3
         ){arg(value:"-disableXmlSecurity")}
     }
+}            
+compileJava {
+  dependsOn jaxb                  
 }
 
-compileJava.dependsOn jaxb
