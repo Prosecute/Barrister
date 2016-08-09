@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Prosecute/Barrister.svg?branch=develop)](https://travis-ci.org/Prosecute/Barrister)
+[![Build Status](https://travis-ci.org/Prosecute/Barrister.svg?branch=develop)](https://travis-ci.org/Prosecute/Barrister) [![Dependency Status](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f)
 
 # Barrister
 > Non functional (in development)
