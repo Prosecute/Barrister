@@ -36,14 +36,18 @@ dependencies {
 }
         
 generateGrammarSource {
+  source(file("src/main/antlr"))
+  include("*.g4")
   println source.getFiles()
+}       
+generateTestGrammarSource {
+  source(file("src/test/antlr"))     
+  include("*.g4")
 }
 sourceSets.main.java.srcDirs += '${buildDir}/generated-src/jaxb/main' 
 sourceSets.main.java.srcDirs += '${buildDir}/generated-src/antlr/main'   
 sourceSets.test.java.srcDirs += '${buildDir}/generated-src/jaxb/test' 
 sourceSets.test.java.srcDirs += '${buildDir}/generated-src/antlr/test' 
-sourceSets.main.antlr.srcDirs += 'src/main/antlr'
-sourceSets.test.antlr.srcDirs += 'src/test/antlr'
 
 task jaxb() {      
     def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )    
