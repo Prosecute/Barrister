@@ -10,6 +10,7 @@ package prosecutor.barrister.trial.runnable;
 
 
 import prosecutor.barrister.submissions.Submission;
+import prosecutor.barrister.trial.tiling.GSTilingExtended;
 
 import java.util.Set;
 
@@ -27,8 +28,11 @@ public class CompareRunnable implements Runnable {
 
         for(Submission test:tested)
             for(Submission compare:compared)
-                if(test!=compare)
-                {}
+                if(!test.getLocation().equals(compare.getLocation()))
+                {
+                    GSTilingExtended gs=new GSTilingExtended();
+                    gs.compare(test,compare,5);
+                }
 
     }
 }

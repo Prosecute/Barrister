@@ -22,6 +22,21 @@ import java.util.Set;
 public class Submission {
 
     private String name;
+    private int submissionLocationID;
+
+    public int getSubmissionLocationID()
+    {
+        return submissionLocationID;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+    public Path getLocation()
+    {
+        return location;
+    }
 
     private Path location;
 
@@ -31,6 +46,12 @@ public class Submission {
     {
         location=submissionLocation;
         name=submissionLocation.getName(submissionLocation.getNameCount()-1).toString();
+    }
+    public Submission(int submissionLocationID,Path submissionLocation)
+    {
+        location=submissionLocation;
+        name=submissionLocation.getName(submissionLocation.getNameCount()-1).toString();
+        this.submissionLocationID=submissionLocationID;
     }
 
     public void setSubmissionTokens(TokensMapping tokens)
@@ -44,13 +65,19 @@ public class Submission {
 
     public Set<Path> getFiles() throws IOException {
         Set<Path> output=new HashSet<>();
-        try(DirectoryStream<Path> stream=Files.newDirectoryStream(location,file->Files.isRegularFile(file)))
-        {
-            for(Path path:stream)
-                output.add(path);
+        return listFiles(output,location);
+    }
+    Set<Path> listFiles(Set<Path> paths,Path path) throws IOException {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            for (Path entry : stream) {
+                if (Files.isDirectory(entry)) {
+                    paths=listFiles(paths,entry);
+                }
+                else
+                    paths.add(entry);
+            }
         }
-
-        return output;
+        return paths;
     }
     public Set<Path> getFiles(PathFilter pathFilter) throws IOException {
         Set<Path> output=getFiles();

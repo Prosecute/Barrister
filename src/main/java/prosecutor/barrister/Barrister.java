@@ -9,6 +9,7 @@ package prosecutor.barrister;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.languages.Tokens;
 import prosecutor.barrister.tasks.Options;
 import prosecutor.barrister.tasks.Task;
 
@@ -32,6 +33,7 @@ public class Barrister {
         else if(args.length>1)
             Options.load(Arrays.copyOfRange(args,1,args.length));
 
+        Tokens.generateIndex();
         Task task=Task.resolve(args[0]);
         if(task!=null)
             task.setActive().run();

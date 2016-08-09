@@ -46,7 +46,7 @@ public class SubmissionManager implements PageProviderFiltered<Submission,Submis
     @Override
     public Page getPage(int size, SubmissionLocationFilter filter) {
         List<SubmissionsLocation> copy=new ArrayList<>(locationList);
-        copy.removeIf(filter.negate());
+        copy.removeIf(filter);
         return new SubmissionPage(copy,size);
     }
 

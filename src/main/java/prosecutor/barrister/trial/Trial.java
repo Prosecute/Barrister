@@ -9,8 +9,13 @@ package prosecutor.barrister.trial;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.Barrister;
+import prosecutor.barrister.filters.SubmissionLocationFilter;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.languages.Language;
+import prosecutor.barrister.submissions.SubmissionManager;
+import prosecutor.barrister.tasks.Options;
+import prosecutor.barrister.trial.runnable.CompareRunnable;
 import prosecutor.barrister.trial.runnable.TokenizeRunnable;
 import prosecutor.barrister.utils.Page;
 
@@ -30,20 +35,23 @@ public class Trial {
     }
 
 
-    public void execute(ExecutorService service)
+    public void execute(ExecutorService service,SubmissionManager manager)
     {
-        Page<Submission> tested=null;
-        Page<Submission> compared=null;
-
+        Page<Submission> tested=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(true,false));
+        Page<Submission> compared=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(false,true));
         //Comparing tested<->compared
         //Iterating tested
         while (true)
         {
-            tokenize(service,tested.getElements());
+            if(tested.hasNextPage()) {
+                tested = tested.nextPage();
+                tokenize(service,tested.getElements());
+            }
+            else
+                break;
             //Iterating compared
             while (true)
             {
-                tokenize(service,compared.getElements());
                 if(compared.hasNextPage()) {
                     compared = compared.nextPage();
                 }
@@ -52,12 +60,9 @@ public class Trial {
                     compared=compared.firstPage();
                     break;
                 }
+                tokenize(service,compared.getElements());
+                compare(service,compared.getElements(),tested.getElements());
             }
-            if(tested.hasNextPage()) {
-                tested = tested.nextPage();
-            }
-            else
-                break;
         }
 
         //Comparing tested<->tested
@@ -82,9 +87,11 @@ public class Trial {
             }
         }
     }
-    private void compare(ExecutorService service,Set<Submission> submissions)
+    private void compare(ExecutorService service,Set<Submission> compared,Set<Submission> tested)
     {
         Collection<Future<?>> futures = new LinkedList<Future<?>>();
+
+        futures.add(service.submit(new CompareRunnable(compared,tested)));
 
         //Wait for finish (lock)
         for (Future<?> future:futures) {

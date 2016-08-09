@@ -17,6 +17,12 @@ public class SubmissionLocationFilter implements Predicate<SubmissionsLocation> 
 
     private boolean tested,compared;
 
+    public SubmissionLocationFilter(boolean tested,boolean compared)
+    {
+        this.tested=tested;
+        this.compared=compared;
+    }
+
     public boolean isCompared()
     {
         return compared || tested;
@@ -36,6 +42,6 @@ public class SubmissionLocationFilter implements Predicate<SubmissionsLocation> 
 
     @Override
     public boolean test(SubmissionsLocation submissionsLocation) {
-        return submissionsLocation.isCompareOnly()?compared&&!tested:submissionsLocation.isTestOnly()?tested&&!compared:tested&&compared;
+        return (submissionsLocation.isCompared()&&compared)&&submissionsLocation.isTested()&&tested;
     }
 }

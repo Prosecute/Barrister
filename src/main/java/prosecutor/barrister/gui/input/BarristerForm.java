@@ -14,11 +14,14 @@ import prosecutor.barrister.jaxb.EntitiesLocation;
 import prosecutor.barrister.jaxb.TestMode;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class BarristerForm {
 
@@ -124,14 +127,16 @@ public class BarristerForm {
             public void actionPerformed(ActionEvent e) {
 
                 EntitiesLocation loc=new EntitiesLocation();
-                loc.setMode(TestMode.TEST_ONLY);
+                loc.setMode(TestMode.TEST);
                 loc.setDirect(false);
                 loc.setPath("/");
                 if(conf.getEntitiesLocations()==null)
                     conf.setEntitiesLocations(new Configuration.EntitiesLocations());
                 conf.getEntitiesLocations().getEntitiesLocation().add(loc);
-                showDetailLocation(loc);
+
                 refreshLocationTable();
+                tableLocation.setRowSelectionInterval(tableLocation.getRowCount()-1,tableLocation.getRowCount()-1);
+                showDetailLocation(loc);
             }
         });
         removeLocation.addActionListener(new ActionListener() {
@@ -160,6 +165,35 @@ public class BarristerForm {
                 refreshLocationTable();
             }
         });
+        LocationChangeListener lis=new LocationChangeListener(this);
+        btnLocation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new java.io.File("."));
+                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                int returnVal = fc.showSaveDialog(MainJPanel.getParent());
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    File yourFolder = fc.getSelectedFile();
+                    tbLocationURL.setText(yourFolder.getAbsolutePath());
+                    lis.actionPerformed(null);
+                }
+            }
+        });
+        cbDirect.addActionListener(lis);
+        cbMode.addActionListener(lis);
+        tbLocationURL.addActionListener(lis);
+
+        tableLocation.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(tableLocation.getSelectedRow()!=-1)
+                    showDetailLocation(conf.getEntitiesLocations().getEntitiesLocation().get(tableLocation.getSelectedRow()));
+                else
+                    panelLocationDetail.setVisible(false);
+            }
+        });
+
     }
     protected void showDetailLocation(EntitiesLocation location)
     {
@@ -167,7 +201,7 @@ public class BarristerForm {
             panelLocationDetail.setVisible(true);
 
         tbLocationURL.setText(location.getPath());
-        cbMode.setSelectedIndex(location.getMode()==TestMode.TEST_ONLY?0:1);
+        cbMode.setSelectedIndex(location.getMode()==TestMode.TEST?0:1);
         cbDirect.setSelectedIndex(location.isDirect()==false?0:1);
     }
 
@@ -175,6 +209,7 @@ public class BarristerForm {
     protected void refreshLocationTable()
     {
         int i=0;
+        int c=tableLocation.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tableLocation.getModel();
         model.setRowCount(0);
         for(EntitiesLocation location:conf.getEntitiesLocations().getEntitiesLocation())
@@ -182,6 +217,10 @@ public class BarristerForm {
             model.addRow(new Object[]{i,location.getPath(),location.getMode(),"?"});
             i++;
         }
+        if(c==-1 && tableLocation.getRowCount()>0)
+            c=0;
+        if(c>-1)
+            tableLocation.setRowSelectionInterval(c,c);
     }
 
     public static void main(String... args)
@@ -229,12 +268,20 @@ public class BarristerForm {
         @Override
         public void actionPerformed(ActionEvent e) {
             DefaultTableModel model = (DefaultTableModel) tableLocation.getModel();
+            if(form.tableLocation.getSelectedRow()==-1)
+                return;
             int i=((Integer)model.getValueAt(form.tableLocation.getSelectedRow(),0)).intValue();
             EntitiesLocation location=form.conf.getEntitiesLocations().getEntitiesLocation().get(i);
-            location.setMode(cbMode.getSelectedIndex()==0?TestMode.TEST_ONLY:TestMode.COMPARE_ONLY);
+            location.setMode(cbMode.getSelectedIndex()==0?TestMode.TEST:TestMode.COMPARE);
             location.setDirect(cbDirect.getSelectedIndex()==0?false:true);
             location.setPath(tbLocationURL.getText());
-            
+            location.getExclude().clear();
+            for(int f=0;f<excludeList.getModel().getSize();f++)
+                location.getExclude().add((String)excludeList.getModel().getElementAt(f));
+            location.getInclude().clear();
+            for(int f=0;f<includeList.getModel().getSize();f++)
+                location.getInclude().add((String) includeList.getModel().getElementAt(f));
+            refreshLocationTable();
 
         }
     }

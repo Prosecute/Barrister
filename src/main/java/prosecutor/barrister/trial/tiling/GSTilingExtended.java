@@ -11,6 +11,7 @@ package prosecutor.barrister.trial.tiling;
 
 
 import prosecutor.barrister.submissions.Submission;
+import prosecutor.barrister.submissions.tokens.Token;
 import prosecutor.barrister.submissions.tokens.TokensMappingObserver;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class GSTilingExtended {
 
     public void compare(Submission subA, Submission subB, int min)
     {
-        TokensMappingObserver observerA=null,observerB=null;
+        TokensMappingObserver observerA=new TokensMappingObserver(subA.getSubmissionTokens()),observerB=new TokensMappingObserver(subB.getSubmissionTokens());
 
 
         int maxMatch;
@@ -33,7 +34,7 @@ mainPhase:
             maxMatch=min;
             matches.clear();
 initPhase:
-            for(int x=0;x<=observerA.tokenCount();x++) {
+            for(int x=0;x<observerA.tokenCount();x++) {
                 if (observerA.isMarked(x) || (matchingTokenPositions = observerB.getPositionsOfToken(observerA.getToken(x))) == null)
                     continue;
                 searchingPhase:
@@ -43,12 +44,12 @@ initPhase:
 
                     int j, hx, hy;
                     for (j = maxMatch - 1; j >= 0; j--)
-                        if (observerA.getToken(hx = x + j).ID == observerB.getToken(hy = matchingTokenPosition + j).ID
-                                || !observerA.isMarked(hx) || !observerB.isMarked(hy))
+                        if (observerA.getToken(hx = x + j).ID != observerB.getToken(hy = matchingTokenPosition + j).ID
+                                || observerA.isMarked(hx) || observerB.isMarked(hy))
                             continue searchingPhase;
 
                     j = maxMatch;
-                    while (observerA.getToken(hx = x + j).ID == observerB.getToken(hy = matchingTokenPosition + j).ID && !observerA.isMarked(hx) && !observerB.isMarked(hy))
+                    while (Token.compareTokenID(observerA.getToken(hx = x + j),observerB.getToken(hy = matchingTokenPosition + j)) && !observerA.isMarked(hx) && !observerB.isMarked(hy))
                         j++;
                     if (j > maxMatch) {
                         maxMatch = j;
@@ -70,7 +71,9 @@ initPhase:
                 allMatches.push(match);
             }
 
-        } while (true);
+        } while (maxMatch !=min);
+        maxMatch++;
+        maxMatch--;
     }
 
     public static class Match

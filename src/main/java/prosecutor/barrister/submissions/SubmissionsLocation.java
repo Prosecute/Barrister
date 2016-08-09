@@ -42,8 +42,8 @@ public class SubmissionsLocation {
     }
 
     public boolean isDirect(){return direct;}
-    public boolean isCompareOnly(){return compareOnly;}
-    public boolean isTestOnly(){return testOnly;}
+    public boolean isCompared(){return compareOnly;}
+    public boolean isTested(){return testOnly;}
 
     public int submissionCount()
     {

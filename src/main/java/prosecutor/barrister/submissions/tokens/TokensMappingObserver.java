@@ -17,6 +17,11 @@ public class TokensMappingObserver {
     TokensMapping tokensMapping;
     TreeSet<Integer> marks=new TreeSet<>();
 
+    public TokensMappingObserver(TokensMapping tokensMapping)
+    {
+        this.tokensMapping=tokensMapping;
+    }
+
     public List<Integer> getPositionsOfToken(Token token)
     {
         return getPositionsOfToken(token.ID);
@@ -35,7 +40,7 @@ public class TokensMappingObserver {
     }
     public Token getToken(int position)
     {
-        return tokensMapping.tokenList.get(position);
+        return tokensMapping.tokenList.size()>position?tokensMapping.tokenList.get(position):null;
     }
     public void mark(int position)
     {

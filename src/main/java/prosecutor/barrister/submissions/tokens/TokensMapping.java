@@ -22,11 +22,14 @@ public class TokensMapping {
     protected Map<Integer,List<Integer>> getTokenPosition() {
         if (tokenPosition == null) {
             tokenPosition = new HashMap<>();
-            for(Token token:tokenList)
-                if(tokenPosition.containsKey(token.ID))
-                    tokenPosition.get(token.ID).add(tokenList.size());
+            int c=0;
+            for(Token token:tokenList) {
+                if (tokenPosition.containsKey(token.ID))
+                    tokenPosition.get(token.ID).add(c);
                 else
-                    tokenPosition.put(token.ID,new ArrayList<>(Collections.singletonList(tokenList.size())));
+                    tokenPosition.put(token.ID, new ArrayList<>(Collections.singletonList(c)));
+                c++;
+            }
         }
 
         return tokenPosition;
@@ -39,7 +42,7 @@ public class TokensMapping {
 
     public void addToken(String file,Token token)
     {
-        if(filesMapping.isEmpty() || !filesMapping.get(filesMapping.size()).Name.equals(file))
+        if(filesMapping.isEmpty() || !filesMapping.get(filesMapping.size()-1).Name.equals(file))
             filesMapping.add(new FileMeta(file,tokenList.size()));
 
         tokenPosition=null;

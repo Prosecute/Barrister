@@ -37,6 +37,12 @@ public class Token implements Comparable<Token> {
     }
     public Token(){}
 
+
+    public static boolean compareTokenID(Token tokenA,Token tokenB)
+    {
+        return tokenA!=null && tokenB!=null && tokenA.ID==tokenB.ID;
+    }
+
     @Override
     public int compareTo(Token o) {
         return this.Line-o.Line;
