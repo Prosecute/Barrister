@@ -45,7 +45,7 @@ public class MatchLogger {
         trialMatch.setConsoleOutput(console);
         console=null;
         Match.TrialMatches.TrialMatch.TokenMatches tokenMatches=new Match.TrialMatches.TrialMatch.TokenMatches();
-        trialMatch.setTokenMatches();
+        //trialMatch.setTokenMatches();
     }
 
     public void log(LoggerLevel level,String msg)

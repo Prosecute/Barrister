@@ -25,7 +25,7 @@ public class L {
         ConsoleLine line=new ConsoleLine();
         line.setLevel(level.name().toUpperCase());
         line.setSource(source);
-        line.setTime(BigInteger.valueOf(System.currentTimeMillis()/1000L));
+        line.setTime(System.currentTimeMillis()/1000L);
         line.setValue(message);
     }
 }
