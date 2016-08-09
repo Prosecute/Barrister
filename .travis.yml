@@ -3,5 +3,9 @@ language: java
 jdk:
   - oraclejdk8
   
+script:     
+ - ./gradlew version  
+ - ./gradlew assemble
+ - ./gradlew check
 notifications:
   email: false
