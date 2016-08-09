@@ -55,7 +55,10 @@ grammar Java8;
 
 /*
  * Productions from §3 (Lexical Structure)
- */
+ */    
+@header {
+   package prosecutor.barrister.grammar;
+} 
 
 literal
 	:	IntegerLiteral

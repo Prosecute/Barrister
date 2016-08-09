@@ -57,7 +57,7 @@ grammar Java8;
  * Productions from §3 (Lexical Structure)
  */
 @header {
-   package cz.cvut.prosecutor.barrister.grammar;
+   package prosecutor.barrister.grammar;
 } 
 
 literal
