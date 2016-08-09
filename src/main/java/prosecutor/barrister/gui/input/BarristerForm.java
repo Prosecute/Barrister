@@ -34,8 +34,8 @@ public class BarristerForm {
     private JButton removeLocation;
     private JScrollPane locationTablePanel;
     private JTable table2;
-    private JButton novýButton;
-    private JButton odebratVšeButton1;
+    private JButton newTrialBtn;
+    private JButton removeAllTrials;
     private JButton odebratButton;
     private JTextField tbLocationURL;
     private JComboBox cbDirect;
