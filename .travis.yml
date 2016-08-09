@@ -5,7 +5,7 @@ jdk:
   
 script:     
  - ./gradlew version  
- - ./gradlew assemble
- - ./gradlew check
+ - ./gradlew assemble --rerun-tasks
+ - ./gradlew check --rerun-tasks
 notifications:
   email: false
