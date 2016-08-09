@@ -3,9 +3,8 @@ language: java
 jdk:
   - oraclejdk8
 install: 
- - ./gradlew clean
- - ./gradlew assemble
+ - ./gradlew clean assemble
 script:     
- - ./gradlew check
+ - ./gradlew clean check
 notifications:
   email: false
