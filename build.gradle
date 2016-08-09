@@ -1,3 +1,7 @@
+plugins {
+    id "de.undercouch.download" version "3.1.1"
+}
+
 group 'cz.cvut.fel.prosecutor.barrister'
 version '0.0.1'
 
@@ -54,30 +58,26 @@ task jaxb {
     outputs.dir jaxbTargetDir
     jaxbTargetMainDir.mkdirs()
     jaxbTargetTestDir.mkdirs()
-    ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath)
-
-    def folder = new File("${buildDir}/downloaded")
-    def f = new File("${buildDir}/downloaded/BarristerReportSchema.xsd")
-    def f2 = new File("${buildDir}/downloaded/ProsecutorCoreSchema.xsd")
-    def f3 = new File("${buildDir}/downloaded/BarristerInputSchema.xsd")
-    if(!folder.exists()) {
-        folder.mkdirs()
-        new URL('https://prosecute.github.io/XMLSchema/BarristerReportSchema.xsd').withInputStream { i ->
-            f.withOutputStream {
-                it << i
-            }
-        }
-        new URL('https://prosecute.github.io/XMLSchema/ProsecutorCoreSchema.xsd').withInputStream { i ->
-            f2.withOutputStream {
-                it << i
-            }
-        }
-        new URL('https://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd').withInputStream { i ->
-            f3.withOutputStream {
-                it << i
-            }
-        }
+    ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath) 
+    def folder = new File("${temporaryDir}")
+    download {
+        src 'https://prosecute.github.io/XMLSchema/BarristerReportSchema.xsd'
+        acceptAnyCertificate true
+        dest folder
     }
+    download {
+        src 'https://prosecute.github.io/XMLSchema/ProsecutorCoreSchema.xsd'  
+        acceptAnyCertificate true
+        dest folder
+    }  
+    download {
+        src 'https://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd'    
+        acceptAnyCertificate true
+        dest folder
+    }
+    def f = new File("${temporaryDir}/BarristerReportSchema.xsd")
+    def f2 = new File("${temporaryDir}/ProsecutorCoreSchema.xsd")
+    def f3 = new File("${temporaryDir}/BarristerInputSchema.xsd")
     doLast {
         ant.jaxbTargetDir = jaxbTargetMainDir
         ant.xjc(
