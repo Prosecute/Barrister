@@ -16,7 +16,6 @@ idea.module {
     testSourceDirs += file("${buildDir}/generated-src/antlr/test")
     testSourceDirs += file("${buildDir}/generated-src/jaxb/test")
 }
-println sourceSets.antlr.output.classesDir
 
 sourceCompatibility = 1.8
 
@@ -35,7 +34,10 @@ dependencies {
 
     antlr "org.antlr:antlr4:4.5"
 }
-
+        
+generateGrammarSource {
+  println source.getFiles()
+}
 sourceSets.main.java.srcDirs += '${buildDir}/generated-src/jaxb/main' 
 sourceSets.main.java.srcDirs += '${buildDir}/generated-src/antlr/main'   
 sourceSets.test.java.srcDirs += '${buildDir}/generated-src/jaxb/test' 
