@@ -39,7 +39,8 @@ sourceSets.main.java.srcDirs += 'build/generated-src/jaxb/main'
 sourceSets.main.java.srcDirs += 'build/generated-src/antlr/main'   
 sourceSets.test.java.srcDirs += 'build/generated-src/jaxb/test' 
 sourceSets.test.java.srcDirs += 'build/generated-src/antlr/test' 
-
+sourceSets.main.antlr.srcDirs += 'src/main/antlr'
+sourceSets.test.antlr.srcDirs += 'src/test/antlr'
 
 task jaxb {          
     def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )
