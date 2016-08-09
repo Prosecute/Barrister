@@ -2,10 +2,10 @@ language: java
 
 jdk:
   - oraclejdk8
-  
-script:     
+install: 
  - ./gradlew version  
  - ./gradlew assemble --rerun-tasks
+script:     
  - ./gradlew check --rerun-tasks
 notifications:
   email: false
