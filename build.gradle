@@ -114,6 +114,8 @@ task jaxb {
     }
 }            
 compileJava {
-  dependsOn jaxb                  
+  dependsOn jaxb   
+  dependsOn generateGrammarSource  
+  dependsOn generateTestGrammarSource                  
 }
 
