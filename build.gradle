@@ -35,10 +35,10 @@ dependencies {
     antlr "org.antlr:antlr4:4.5"
 }
 
-sourceSets.main.java.srcDir += 'build/generated-src/jaxb/main' 
-sourceSets.main.java.srcDir += 'build/generated-src/antlr/main'   
-sourceSets.test.java.srcDir += 'build/generated-src/jaxb/test' 
-sourceSets.test.java.srcDir += 'build/generated-src/antlr/test' 
+sourceSets.main.java.srcDirs += 'build/generated-src/jaxb/main' 
+sourceSets.main.java.srcDirs += 'build/generated-src/antlr/main'   
+sourceSets.test.java.srcDirs += 'build/generated-src/jaxb/test' 
+sourceSets.test.java.srcDirs += 'build/generated-src/antlr/test' 
 
 
 task jaxb {          
