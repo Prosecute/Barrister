@@ -5,5 +5,6 @@ jdk:
 install: 
  - ./gradlew generateGrammarSource      
 script:     
+ - ./gradlew check
 notifications:
   email: false
