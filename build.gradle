@@ -2,7 +2,7 @@ plugins {
     id "de.undercouch.download" version "3.1.1"
 }
 
-group 'cz.cvut.fel.prosecutor.barrister'
+group 'prosecutor.barrister'
 version '0.0.1'
 
 apply plugin: 'antlr'
@@ -42,15 +42,21 @@ sourceSets.test.java.srcDirs += 'build/generated-src/antlr/test'
 sourceSets.main.antlr.srcDirs += 'src/main/antlr'
 sourceSets.test.antlr.srcDirs += 'src/test/antlr'
 
-task jaxb {          
-    def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )
+task jaxb() {      
+    def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )    
     def jaxbTargetMainDir = file( "${buildDir}/generated-src/jaxb/main" )
-    def jaxbTargetTestDir = file( "${buildDir}/generated-src/jaxb/test" )
+    def jaxbTargetTestDir = file( "${buildDir}/generated-src/jaxb/test" )   
     outputs.dir jaxbTargetDir
-    jaxbTargetMainDir.mkdirs()
-    jaxbTargetTestDir.mkdirs()
     ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath) 
-    def folder = new File("${temporaryDir}")
+    def folder = new File("${temporaryDir}")   
+    
+    def f = new File("${temporaryDir}/BarristerReportSchema.xsd")
+    def f2 = new File("${temporaryDir}/ProsecutorCoreSchema.xsd")
+    def f3 = new File("${temporaryDir}/BarristerInputSchema.xsd")
+    doLast{
+        jaxbTargetMainDir.mkdirs()
+    jaxbTargetTestDir.mkdirs()
+    folder.mkdirs()
     download {
         src 'https://prosecute.github.io/XMLSchema/BarristerReportSchema.xsd'
         acceptAnyCertificate true
@@ -66,10 +72,6 @@ task jaxb {
         acceptAnyCertificate true
         dest folder
     }
-    def f = new File("${temporaryDir}/BarristerReportSchema.xsd")
-    def f2 = new File("${temporaryDir}/ProsecutorCoreSchema.xsd")
-    def f3 = new File("${temporaryDir}/BarristerInputSchema.xsd")
-    doLast {
         ant.jaxbTargetDir = jaxbTargetMainDir
         ant.xjc(
                 destdir: "${jaxbTargetMainDir}",
@@ -102,8 +104,8 @@ task jaxb {
                 package: 'prosecutor.barrister.jaxb',
                 schema: f3
         ){arg(value:"-disableXmlSecurity")}
-    }
-}       
+        }
+}        
 compileJava {
   dependsOn jaxb   
   dependsOn generateGrammarSource  
