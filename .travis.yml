@@ -3,7 +3,7 @@ language: java
 jdk:
   - oraclejdk8
 install: 
- - ./gradlew version  
+ - ./gradlew -version  
  - ./gradlew assemble --rerun-tasks
 script:     
  - ./gradlew check --rerun-tasks
