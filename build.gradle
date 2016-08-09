@@ -35,20 +35,10 @@ dependencies {
     antlr "org.antlr:antlr4:4.5"
 }
 
-sourceSets {
-    main {
-        java {                                 
-            srcDir 'build/generated-src/jaxb/main' 
-            srcDir 'build/generated-src/antlr/main'   
-        }
-    } 
-    test {
-        java {                                   
-            srcDir 'build/generated-src/jaxb/test'
-            srcDir 'build/generated-src/antlr/test'
-        }
-    }
-}
+sourceSets.main.java.srcDir += 'build/generated-src/jaxb/main' 
+sourceSets.main.java.srcDir += 'build/generated-src/antlr/main'   
+sourceSets.test.java.srcDir += 'build/generated-src/jaxb/test' 
+sourceSets.test.java.srcDir += 'build/generated-src/antlr/test' 
 
 
 task jaxb {          
@@ -112,7 +102,7 @@ task jaxb {
                 schema: f3
         ){arg(value:"-disableXmlSecurity")}
     }
-}            
+}       
 compileJava {
   dependsOn jaxb   
   dependsOn generateGrammarSource  
