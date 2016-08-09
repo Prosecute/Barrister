@@ -41,6 +41,7 @@ sourceSets.test.java.srcDir(file("${buildDir}/generated-src/jaxb/test"))
 sourceSets.test.java.srcDir(file("${buildDir}/generated-src/antlr/test")) 
 
 generateGrammarSource {
+  println project.configurations.antlr
   source(file("src/main/antlr"))
   include("*.g4")
 }       
