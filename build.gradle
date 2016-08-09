@@ -11,11 +11,12 @@ apply plugin: 'idea'
 
 idea.module {
     excludeDirs -= file(buildDir)
-    sourceDirs += file("$buildDir/generated-src/antlr/main")
-    sourceDirs += file("$buildDir/generated-src/jaxb/main")
-    testSourceDirs += file("$buildDir/generated-src/antlr/test")
-    testSourceDirs += file("$buildDir/generated-src/jaxb/test")
+    sourceDirs += file("${buildDir}/generated-src/antlr/main")
+    sourceDirs += file("${buildDir}/generated-src/jaxb/main")
+    testSourceDirs += file("${buildDir}/generated-src/antlr/test")
+    testSourceDirs += file("${buildDir}/generated-src/jaxb/test")
 }
+println sourceSets.antlr.output.classesDir
 
 sourceCompatibility = 1.8
 
@@ -35,10 +36,10 @@ dependencies {
     antlr "org.antlr:antlr4:4.5"
 }
 
-sourceSets.main.java.srcDirs += 'build/generated-src/jaxb/main' 
-sourceSets.main.java.srcDirs += 'build/generated-src/antlr/main'   
-sourceSets.test.java.srcDirs += 'build/generated-src/jaxb/test' 
-sourceSets.test.java.srcDirs += 'build/generated-src/antlr/test' 
+sourceSets.main.java.srcDirs += '${buildDir}/generated-src/jaxb/main' 
+sourceSets.main.java.srcDirs += '${buildDir}/generated-src/antlr/main'   
+sourceSets.test.java.srcDirs += '${buildDir}/generated-src/jaxb/test' 
+sourceSets.test.java.srcDirs += '${buildDir}/generated-src/antlr/test' 
 sourceSets.main.antlr.srcDirs += 'src/main/antlr'
 sourceSets.test.antlr.srcDirs += 'src/test/antlr'
 
@@ -107,8 +108,6 @@ task jaxb() {
         }
 }        
 compileJava {
-  dependsOn jaxb   
-  dependsOn generateGrammarSource  
-  dependsOn generateTestGrammarSource                  
+  dependsOn jaxb                  
 }
 
