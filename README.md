@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Prosecute/Barrister.svg?branch=develop)](https://travis-ci.org/Prosecute/Barrister)
+
 # Barrister
 > Non functional (in development)
 
