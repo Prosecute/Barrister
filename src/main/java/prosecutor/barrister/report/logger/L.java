@@ -9,9 +9,16 @@ package prosecutor.barrister.report.logger;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.jaxb.ConsoleLine;
+import prosecutor.barrister.jaxb.Match;
+import prosecutor.barrister.jaxb.Report;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import java.math.BigInteger;
+import java.net.URL;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -19,13 +26,49 @@ import java.util.Date;
 public class L {
 
 
+    private static Report report;
 
-    protected static void log(LoggerFlag flag,LoggerLevel level,String source,String message)
+    public static void setReport(Report report)
     {
+        L.report=report;
+    }
+
+    public static void log(LoggerLevel level,String source,String message)
+    {
+        //TODO connect consoleline output
         ConsoleLine line=new ConsoleLine();
         line.setLevel(level.name().toUpperCase());
         line.setSource(source);
         line.setTime(System.currentTimeMillis()/1000L);
         line.setValue(message);
+    }
+    protected static Match findOrCreateMatch(int EL_A_ID, int EL_B_ID,String URL_A, String URL_B)
+    {
+        for(Match match:report.getMatches().getMatch())
+        {
+            if(match.getRefEntitiesLocationAID()==EL_A_ID && match.getRefEntitiesLocationBID()==EL_B_ID &&
+                    match.getRefSubmissionA().equals(URL_A) && match.getRefSubmissionB().equals(URL_B))
+                return match;
+        }
+        Match match=new Match();
+        match.setRefEntitiesLocationAID(EL_A_ID);
+        match.setRefEntitiesLocationBID(EL_B_ID);
+        match.setRefSubmissionA(URL_A);
+        match.setRefSubmissionB(URL_B);
+        match.setTrialMatches(new Match.TrialMatches());
+        report.getMatches().getMatch().add(match);
+        return match;
+    }
+
+    public static void saveReport(Path path)
+    {
+        JAXBContext jc = null;
+        try {
+            jc = JAXBContext.newInstance(Configuration.class);
+            javax.xml.bind.Marshaller marshaller = jc.createMarshaller();
+            marshaller.marshal(report,path.toFile());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
     }
 }

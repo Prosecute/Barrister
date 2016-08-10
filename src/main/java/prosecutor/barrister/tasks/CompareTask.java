@@ -9,11 +9,9 @@ package prosecutor.barrister.tasks;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-import prosecutor.barrister.jaxb.Configuration;
-import prosecutor.barrister.jaxb.EntitiesLocation;
-import prosecutor.barrister.jaxb.TestMode;
-import prosecutor.barrister.jaxb.TrialConfiguration;
+import prosecutor.barrister.jaxb.*;
 import prosecutor.barrister.languages.Language;
+import prosecutor.barrister.report.logger.L;
 import prosecutor.barrister.submissions.SubmissionManager;
 import prosecutor.barrister.submissions.SubmissionsLocation;
 import prosecutor.barrister.trial.Trial;
@@ -79,6 +77,15 @@ public class CompareTask extends Task {
         for(EntitiesLocation loc:configuration.getEntitiesLocations().getEntitiesLocation())
             submissionManager.addLocation(new SubmissionsLocation(Paths.get(loc.getPath()),loc.isDirect(),true,loc.getMode()==TestMode.TEST));
         trials=new Trial[configuration.getTrials().getTrial().size()];
+        Report report=new Report();
+        Report.Trials trialReport=new Report.Trials();
+        trialReport.getTrial().addAll(configuration.getTrials().getTrial());
+        report.setTrials(trialReport);
+        report.setMatches(new Report.Matches());
+        report.setErrors(new Report.Errors());
+        //TODO add EntityLocations
+        L.setReport(report);
+
         int c=0;
         for(TrialConfiguration conf:configuration.getTrials().getTrial())
         {
@@ -92,6 +99,7 @@ public class CompareTask extends Task {
             trial.execute(executorService,submissionManager);
             //trial.execute(executorService,queue);
         }
+        L.saveReport(Paths.get(configuration.getOutputLocation()));
 
     }
 

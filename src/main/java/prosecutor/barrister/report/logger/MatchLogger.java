@@ -27,25 +27,24 @@ public class MatchLogger {
 
     private Match.TrialMatches.TrialMatch.ConsoleOutput console=new Match.TrialMatches.TrialMatch.ConsoleOutput();
 
-    protected MatchLogger(String source)
+    protected MatchLogger(String source, Trial trial)
     {
         this.source="["+source+"]";
+        this.trial=trial;
     }
 
     public void logMatch(GSTilingExtended.Match match,Submission subA,Submission subB)
     {
-        Match output=new Match();
-        output.setRefSubmissionA(subA.getLocation().toString());
-        output.setRefSubmissionB(subB.getLocation().toString());
-        output.setRefEntitiesLocationAID(subA.getSubmissionLocationID());
-        output.setRefEntitiesLocationBID(subB.getSubmissionLocationID());
-        Match.TrialMatches matches=new Match.TrialMatches();
+        Match output=L.findOrCreateMatch(subA.getSubmissionLocationID(),subB.getSubmissionLocationID(),subA.getLocation().toString(),subB.getLocation().toString());
         Match.TrialMatches.TrialMatch trialMatch=new Match.TrialMatches.TrialMatch();
         trialMatch.setTrialID(trial.getTrialID());
         trialMatch.setConsoleOutput(console);
-        console=null;
         Match.TrialMatches.TrialMatch.TokenMatches tokenMatches=new Match.TrialMatches.TrialMatch.TokenMatches();
-        //trialMatch.setTokenMatches();
+        tokenMatches.getRangeMatch().add(match.toRangeMatch());
+        trialMatch.setTokenMatches(tokenMatches);
+        output.getTrialMatches().getTrialMatch().add(trialMatch);
+
+        console=new Match.TrialMatches.TrialMatch.ConsoleOutput();
     }
 
     public void log(LoggerLevel level,String msg)
