@@ -18,6 +18,7 @@ import prosecutor.barrister.trial.tiling.GSTilingExtended;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class MatchLogger {
 
@@ -33,14 +34,16 @@ public class MatchLogger {
         this.trial=trial;
     }
 
-    public void logMatch(GSTilingExtended.Match match,Submission subA,Submission subB)
+    public void logMatch(Stack<GSTilingExtended.Match> matches,Submission subA,Submission subB)
     {
         Match output=L.findOrCreateMatch(subA.getSubmissionLocationID(),subB.getSubmissionLocationID(),subA.getLocation().toString(),subB.getLocation().toString());
         Match.TrialMatches.TrialMatch trialMatch=new Match.TrialMatches.TrialMatch();
         trialMatch.setTrialID(trial.getTrialID());
         trialMatch.setConsoleOutput(console);
         Match.TrialMatches.TrialMatch.TokenMatches tokenMatches=new Match.TrialMatches.TrialMatch.TokenMatches();
-        tokenMatches.getRangeMatch().add(match.toRangeMatch());
+        List<Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch> rangeMatch=tokenMatches.getRangeMatch();
+        for(GSTilingExtended.Match match:matches)
+            tokenMatches.getRangeMatch().add(match.toRangeMatch());
         trialMatch.setTokenMatches(tokenMatches);
         output.getTrialMatches().getTrialMatch().add(trialMatch);
 

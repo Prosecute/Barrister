@@ -13,6 +13,7 @@ import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.jaxb.ConsoleLine;
 import prosecutor.barrister.jaxb.Match;
 import prosecutor.barrister.jaxb.Report;
+import prosecutor.barrister.trial.Trial;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -42,6 +43,11 @@ public class L {
         line.setTime(System.currentTimeMillis()/1000L);
         line.setValue(message);
     }
+    public static MatchLogger createMatchLogger(Trial trial,String source)
+    {
+        return new MatchLogger(source,trial);
+    }
+
     protected static Match findOrCreateMatch(int EL_A_ID, int EL_B_ID,String URL_A, String URL_B)
     {
         for(Match match:report.getMatches().getMatch())
@@ -64,7 +70,7 @@ public class L {
     {
         JAXBContext jc = null;
         try {
-            jc = JAXBContext.newInstance(Configuration.class);
+            jc = JAXBContext.newInstance(Report.class);
             javax.xml.bind.Marshaller marshaller = jc.createMarshaller();
             marshaller.marshal(report,path.toFile());
         } catch (JAXBException e) {

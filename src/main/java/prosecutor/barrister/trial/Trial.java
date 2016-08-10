@@ -102,7 +102,7 @@ public class Trial {
     {
         Collection<Future<?>> futures = new LinkedList<Future<?>>();
 
-        futures.add(service.submit(new CompareRunnable(compared,tested)));
+        futures.add(service.submit(new CompareRunnable(compared,tested,this)));
 
         //Wait for finish (lock)
         for (Future<?> future:futures) {

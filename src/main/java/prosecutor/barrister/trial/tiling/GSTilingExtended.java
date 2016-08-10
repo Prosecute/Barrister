@@ -11,9 +11,11 @@ package prosecutor.barrister.trial.tiling;
 
 
 import prosecutor.barrister.jaxb.Match;
+import prosecutor.barrister.report.logger.MatchLogger;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.submissions.tokens.Token;
 import prosecutor.barrister.submissions.tokens.TokensMappingObserver;
+import prosecutor.barrister.trial.Trial;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,12 @@ import java.util.Stack;
 
 public class GSTilingExtended {
 
+    private MatchLogger logger;
+
+    public GSTilingExtended(MatchLogger logger)
+    {
+        this.logger=logger;
+    }
 
     public void compare(Submission subA, Submission subB, int min)
     {
@@ -73,8 +81,7 @@ initPhase:
             }
 
         } while (maxMatch !=min);
-        maxMatch++;
-        maxMatch--;
+        logger.logMatch(allMatches,subA,subB);
     }
 
     public static class Match
@@ -92,6 +99,9 @@ initPhase:
         public prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch toRangeMatch()
         {
             prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch rangeMatch=new prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch();
+            rangeMatch.setTokenLength(Length);
+            rangeMatch.setTokenStartA(PositionTokenA);
+            rangeMatch.setTokenStartB(PositionTokenB);
             return rangeMatch;
         }
     }
