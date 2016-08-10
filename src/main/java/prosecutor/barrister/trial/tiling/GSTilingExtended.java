@@ -10,6 +10,7 @@ package prosecutor.barrister.trial.tiling;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.jaxb.Match;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.submissions.tokens.Token;
 import prosecutor.barrister.submissions.tokens.TokensMappingObserver;
@@ -86,6 +87,12 @@ initPhase:
             this.PositionTokenA=posA;
             this.PositionTokenB=posB;
             this.Length=length;
+        }
+
+        public prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch toRangeMatch()
+        {
+            prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch rangeMatch=new prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch();
+            return rangeMatch;
         }
     }
 }
