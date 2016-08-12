@@ -15,10 +15,10 @@ import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.trial.Trial;
 import prosecutor.barrister.trial.tiling.GSTilingExtended;
 
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class MatchLogger {
 
@@ -56,7 +56,15 @@ public class MatchLogger {
         line.setSource(source);
         line.setLevel(level.name().toUpperCase());
         line.setSource(source);
-        line.setTime(System.currentTimeMillis() / 1000L);
+
+        //FIXME
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(new Date(System.currentTimeMillis()/1000L));
+        try {
+            line.setTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
         line.setValue(msg);
         console.getConsoleLine().add(line);
     }

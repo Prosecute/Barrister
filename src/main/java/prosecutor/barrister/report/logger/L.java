@@ -9,6 +9,7 @@ package prosecutor.barrister.report.logger;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.jaxb.ConsoleLine;
 import prosecutor.barrister.jaxb.Match;
@@ -17,12 +18,17 @@ import prosecutor.barrister.trial.Trial;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.file.Path;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class L {
 
@@ -40,7 +46,15 @@ public class L {
         ConsoleLine line=new ConsoleLine();
         line.setLevel(level.name().toUpperCase());
         line.setSource(source);
-        line.setTime(System.currentTimeMillis()/1000L);
+
+        //FIXME
+        GregorianCalendar c = new GregorianCalendar();
+        c.setTime(new Date(System.currentTimeMillis()/1000L));
+        try {
+            line.setTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
+        } catch (DatatypeConfigurationException e) {
+            e.printStackTrace();
+        }
         line.setValue(message);
     }
     public static MatchLogger createMatchLogger(Trial trial,String source)
