@@ -16,7 +16,8 @@ import prosecutor.barrister.tasks.Task;
 import java.util.Arrays;
 
 public class Barrister {
-
+    public static String NAME="Barrister";
+    public static String VERSION="0.1alpha";
 
     private static void response404()
     {

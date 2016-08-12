@@ -53,7 +53,7 @@ initPhase:
 
                     int j, hx, hy;
                     for (j = maxMatch - 1; j >= 0; j--)
-                        if (observerA.getToken(hx = x + j).ID != observerB.getToken(hy = matchingTokenPosition + j).ID
+                        if (observerA.getToken(hx = x + j)==null || observerB.getToken(hy = matchingTokenPosition + j)==null || observerA.getToken(hx = x + j).ID != observerB.getToken(hy = matchingTokenPosition + j).ID
                                 || observerA.isMarked(hx) || observerB.isMarked(hy))
                             continue searchingPhase;
 
