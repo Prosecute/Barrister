@@ -1,14 +1,14 @@
 <!--Only for Unit testing-->
 <Configuration xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-               xmlns:pr="http://prosecute.github.io/XMLSchema"
+               xmlns="http://prosecute.github.io/XMLSchema"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="http://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd" outputLocation="output.xml" outputSourceCode="false">
+               xsi:noNamespaceSchemaLocation="https://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd" outputLocation="output.xml" outputSourceCode="false">
     <EntitiesLocations>
         <EntitiesLocation path="src/test/resources/language/java/submissionsRepository"></EntitiesLocation>
     </EntitiesLocations>
     <Trials>
         <Trial trialName="FirstTrial" sensitivity="1" minMatch="20">
-            <pr:Language name="java" version="1.8"></pr:Language>
+            <Language name="java" version="1.8"></Language>
 
         </Trial>
     </Trials>
