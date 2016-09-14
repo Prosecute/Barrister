@@ -9,6 +9,9 @@ package prosecutor.barrister.tasks;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.report.logger.L;
+import prosecutor.barrister.report.logger.LoggerLevel;
+
 public abstract class Task {
 
     static
@@ -27,9 +30,12 @@ public abstract class Task {
         for(Task task:tasks)
         {
             for(String id:task.getTaskIDs())
-                if(id.equals(name))
+                if(id.equals(name)) {
+                    L.log(LoggerLevel.INFO,"Task","Task: "+task.getTaskName());
                     return task;
+                }
         }
+        L.log(LoggerLevel.FATAL,"Task","No task defined.");
         return null;
     }
 

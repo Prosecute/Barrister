@@ -40,6 +40,13 @@ public class L {
         L.report=report;
     }
 
+    public static void logException(String source,String message,Exception exception)
+    {
+        StackTraceElement[] stackTraceElements=exception.getStackTrace();
+
+        exception.printStackTrace();
+    }
+
     public static void log(LoggerLevel level,String source,String message)
     {
         //TODO connect consoleline output

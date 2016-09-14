@@ -11,6 +11,8 @@ package prosecutor.barrister.languages;
 
 import com.sun.org.apache.bcel.internal.generic.RET;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
+import prosecutor.barrister.report.logger.L;
+import prosecutor.barrister.report.logger.LoggerLevel;
 
 import javax.lang.model.type.NullType;
 import java.lang.reflect.Field;
@@ -26,15 +28,15 @@ public class Tokens {
     };
 
     public static void generateIndex(){
-
+        L.log(LoggerLevel.DEBUG,"Tokens","Starting generating token indexes.");
         int i=2;
         try {
             for(java.lang.Class<? extends Tokens> clazz:tokenClass)
                 i=generateIndexFor(clazz,i);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            L.logException("Tokens", "?\\_(?)_/?", e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            L.logException("Tokens","?\\_(?)_/?",e);
         }
     }
 
@@ -43,6 +45,7 @@ public class Tokens {
      */
     public static void resetIndexs()
     {
+        L.log(LoggerLevel.DEBUG,"Tokens","Starting reseting token indexes to 0.");
         for(java.lang.Class<? extends Tokens> clazz:tokenClass)
         {
             Field[] fields=clazz.getDeclaredFields();
