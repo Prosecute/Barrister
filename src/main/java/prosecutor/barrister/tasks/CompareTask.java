@@ -46,6 +46,11 @@ public class CompareTask extends Task {
         this.trials = trials;
     }
 
+    public void setConfiguration(Configuration configuration)
+    {
+        this.configuration=configuration;
+    }
+
     public Trial[] getTrials() {
         return trials;
     }
@@ -62,16 +67,16 @@ public class CompareTask extends Task {
 
     @Override
     public String getShortInfo() {
-        return null;
+        return "compares source files for plagiarism.";
     }
 
     @Override
-    public String getLongInfo() {
+    public String[] getLongInfo() {
         return null;
-    }
 
-    @Override
-    public void run() {
+    }
+    public Report getReport()
+    {
         Date d=new Date();
         //Prepare threading
         LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue();
@@ -121,10 +126,16 @@ public class CompareTask extends Task {
         for(Trial trial:trials)
         {
             trial.execute(executorService,submissionManager);
-            //trial.execute(executorService,queue);
         }
         Date d2=new Date();
-        report.setGenerateTime(XMLGregorianCalendarImpl.createDateTime(1, 1, 1, d2.getHours()-d.getHours(), d2.getMinutes()-d.getMinutes(), d2.getSeconds()-d.getSeconds()));
+        //report.setGenerateTime(XMLGregorianCalendarImpl.createDateTime(1, 1, 1, d2.getHours()-d.getHours(), d2.getMinutes()-d.getMinutes(), d2.getSeconds()-d.getSeconds()));
+        return report;
+    }
+
+    @Override
+    public void run() {
+
+        getReport();
         L.saveReport(Paths.get(configuration.getOutputLocation()));
 
     }
@@ -138,7 +149,6 @@ public class CompareTask extends Task {
             String param=iterator.next();
             if(param.startsWith("-"))
             {
-                //TODO
             }
             else
             {
@@ -152,9 +162,7 @@ public class CompareTask extends Task {
                     } catch (JAXBException e) {
                         e.printStackTrace();
                     }
-                    Configuration configuration=null; //TODO
                 }
-                //TODO
             }
         }
     }

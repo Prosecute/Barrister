@@ -64,7 +64,7 @@ public abstract class Task {
 
     public abstract String getShortInfo();
 
-    public abstract String getLongInfo();
+    public abstract String[] getLongInfo();
 
     public abstract void run();
 

@@ -68,7 +68,11 @@ public class Submission {
         return listFiles(output,location);
     }
     Set<Path> listFiles(Set<Path> paths,Path path) throws IOException {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+        if(path.toFile().isFile()) {
+            paths.add(path);
+            return paths;
+        }
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             for (Path entry : stream) {
                 if (Files.isDirectory(entry)) {
                     paths=listFiles(paths,entry);
@@ -76,7 +80,7 @@ public class Submission {
                 else
                     paths.add(entry);
             }
-        }
+            }
         return paths;
     }
     public Set<Path> getFiles(PathFilter pathFilter) throws IOException {

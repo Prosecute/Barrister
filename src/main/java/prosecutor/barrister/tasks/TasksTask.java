@@ -9,8 +9,6 @@ package prosecutor.barrister.tasks;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 public class TasksTask extends Task {
@@ -30,19 +28,18 @@ public class TasksTask extends Task {
     }
 
     @Override
-    public String getLongInfo() {
-        return "Show all available tasks.";
+    public String[] getLongInfo() {
+        return null;
     }
 
     @Override
     public void run() {
-        Logger logger= LogManager.getLogger("Task");
-        logger.info("Tasks:");
+        System.out.println("Tasks:");
         int counter=0;
         for(Task task:Task.getTasks())
         {
             counter++;
-            logger.info("  "+task.getTaskIDs()[0]+"   "+task.getTaskName()+" - "+task.getShortInfo());
+            System.out.println("  " + task.getTaskIDs()[0] + "                  ".substring(task.getTaskIDs()[0].length()) + task.getTaskName() + "                  ".substring(task.getTaskName().length())+ task.getShortInfo());
         }
     }
 

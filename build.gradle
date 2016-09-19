@@ -1,6 +1,8 @@
 plugins {
     id "de.undercouch.download" version "3.1.1"
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
+    
 
 group 'prosecutor.barrister'
 version '0.0.1'
@@ -27,9 +29,7 @@ configurations {
 }
 dependencies {
     jaxb 'com.sun.xml.bind:jaxb-impl:2.2.6'
-    jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.6'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.5'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.5'
+    jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.6'    
     testCompile group: 'org.testng', name: 'testng', version: '6.9.9'
 
     antlr "org.antlr:antlr4:4.5"
@@ -51,7 +51,15 @@ generateTestGrammarSource {
 }
 compileJava {  
 }
-
+shadowJar {     
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'prosecutor.barrister.Barrister'
+    }
+   baseName = 'Barrister'
+   classifier = null
+   version = null
+}
 task jaxb() {      
     def jaxbTargetDir = file( "${buildDir}/generated-src/jaxb/" )    
     def jaxbTargetMainDir = file( "${buildDir}/generated-src/jaxb/main" )

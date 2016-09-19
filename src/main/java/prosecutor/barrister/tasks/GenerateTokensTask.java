@@ -20,7 +20,7 @@ public class GenerateTokensTask extends Task {
     }
 
     @Override
-    public String getLongInfo() {
+    public String[] getLongInfo() {
         return null;
     }
 

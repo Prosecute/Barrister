@@ -1,0 +1,10 @@
+Compare
+
+Compares source files for plagiarism.
+
+Usage:
+    barrister compare [-options] [inputConfiguration.xml]
+        or
+    barrister compare [-options] [args...] (not implemented at this version)
+
+Options:

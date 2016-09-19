@@ -1,0 +1,6 @@
+User interface
+
+Show user interface for Barrister.
+
+Usage:
+    barrister ui

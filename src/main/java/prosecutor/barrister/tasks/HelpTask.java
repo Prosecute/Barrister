@@ -26,7 +26,7 @@ public class HelpTask extends Task {
     }
 
     @Override
-    public String getLongInfo() {
+    public String[] getLongInfo() {
         return null;
     }
 

@@ -14,7 +14,7 @@ import prosecutor.barrister.Barrister;
 
 public class CompareTaskTest {
 
-    @Test
+    @Test(groups = "integration")
     public void integrateTest()
     {
         String CMD="compare src/test/resources/inputConfigurations/inputConf0.xml";
