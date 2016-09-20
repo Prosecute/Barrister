@@ -2,17 +2,29 @@
 
 | Task | ID | Params | Description |
 | ---- | -- | ------ | ----------- | 
-| Tasks | tasks |  | Show all available tasks in your version of barrister. |
-| Help | help | | Show help. |
+| Tasks | tasks | Ø | Show all available tasks in your version of barrister. |
+| Help | help | [Task](documentation/tasks/TASK_LIST.md) | Show help. |
 | Compare | compare | [Configuration file](documentation/CONFIGURATION_FILE.md)| Run tests based on configuration file. |
-| Tokenize | tokenize | URL |
-| User interface | ui | | Show user interface. |
+| Tokenize* | tokenize | URL | Convert input file to tokens. | 
+| User interface* | ui | Ø | Show user interface. |
+\* Not implemented
+\** Experimental
 
 ### Tasks
+```bash
+barrister tasks
+```
 Show all available tasks in your version of barrister.
 
 ### Help
+```bash
+barrister help {task}
+```
 Show help.
+
+| Param | Optional | Description |
+| ----- | -------- | ----------- |
+| {task} | Yes | Show detailed info about specified task. |
 
 ### Compare
 ```bash

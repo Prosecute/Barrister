@@ -6,10 +6,7 @@ on Linux and Mac:
 ```
 on Windows:
 ```shell
-barrister.bat {task}
+barrister {task}
 ```
 > For list of all tasks look here: [Task list](tasks/TASK_LIST.md)
 
-## PipeLining
-
-Barrister can accept configuration file

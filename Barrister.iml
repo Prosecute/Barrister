@@ -32,5 +32,12 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.beanshell:bsh:2.0b4" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.apache.ant:ant-launcher:1.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:substance:7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:trident:7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:flamingo:7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:substance-flamingo:7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:trident:7.3:swing" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:laf-plugin:7.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.insubstantial:laf-widget:7.3" level="project" />
   </component>
 </module>

@@ -31,7 +31,10 @@ dependencies {
     jaxb 'com.sun.xml.bind:jaxb-impl:2.2.6'
     jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.6'    
     testCompile group: 'org.testng', name: 'testng', version: '6.9.9'
-
+    compile group: 'com.github.insubstantial', name: 'substance', version: '7.3'
+    compile group: 'com.github.insubstantial', name: 'trident', version: '7.3'
+    compile group: 'com.github.insubstantial', name: 'flamingo', version: '7.3'
+    compile group: 'com.github.insubstantial', name: 'substance-flamingo', version: '7.3'
     antlr "org.antlr:antlr4:4.5"
 }
             

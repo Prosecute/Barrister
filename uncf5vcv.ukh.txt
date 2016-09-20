@@ -1,0 +1,35 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch develop
+# Your branch is up-to-date with 'origin/develop'.
+#
+# Changes to be committed:
+#	modified:   Barrister.iml
+#	modified:   build.gradle
+#	modified:   documentation/USAGE_MANUAL.md
+#	modified:   documentation/tasks/TASK_LIST.md
+#	new file:   src/main/java/prosecutor/barrister/gui/ProjectApplicationMenu.java
+#	new file:   src/main/java/prosecutor/barrister/gui/ProjectFrame.java
+#	new file:   src/main/java/prosecutor/barrister/gui/WindowSnapper.java
+#	new file:   src/main/java/prosecutor/barrister/gui/panels/BottomPanel.java
+#	new file:   src/main/java/prosecutor/barrister/gui/panels/NoReportPanel.java
+#	new file:   src/main/java/prosecutor/barrister/gui/panels/ProjectOverviewPanel.java
+#	new file:   src/main/java/prosecutor/barrister/gui/panels/TestedFilePanel.java
+#	new file:   src/main/java/prosecutor/barrister/gui/panels/TitledPanel.java
+#	new file:   src/main/java/prosecutor/barrister/gui/tabbedPane/CustomTabbedPaneUI.java
+#	deleted:    src/main/resources/prosecutor.barrister.tasks/CompareHelp.txt
+#	deleted:    src/main/resources/prosecutor.barrister.tasks/TokenizeHelp.txt
+#	deleted:    src/main/resources/prosecutor.barrister.tasks/UIHelp.txt
+#	new file:   src/main/resources/prosecutor/barrister/lang/Lang.properties
+#	new file:   src/main/resources/prosecutor/barrister/lang/LangUI.properties
+#	new file:   src/main/resources/prosecutor/barrister/lang/LangUI_cs.properties
+#	new file:   src/main/resources/prosecutor/barrister/lang/Lang_cs.properties
+#
+# Untracked files:
+#	src/main/resources/prosecutor/barrister/oxygen/
+#	src/main/resources/prosecutor/barrister/prosecutor.png
+#	src/main/resources/prosecutor/barrister/prosecutor2.png
+#	src/main/resources/prosecutor/barrister/tasks/
+#
+
