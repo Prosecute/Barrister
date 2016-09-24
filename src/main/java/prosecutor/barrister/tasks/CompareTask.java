@@ -12,6 +12,7 @@ package prosecutor.barrister.tasks;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import prosecutor.barrister.Barrister;
 import prosecutor.barrister.jaxb.*;
+import prosecutor.barrister.jaxb.TrialConfiguration;
 import prosecutor.barrister.languages.Language;
 import prosecutor.barrister.report.logger.L;
 import prosecutor.barrister.submissions.SubmissionManager;
@@ -32,7 +33,7 @@ import java.util.concurrent.*;
 public class CompareTask extends Task {
 
     private SubmissionManager submissionManager=new SubmissionManager();
-    Configuration configuration;
+    ConfigurationType configuration;
     private Trial[] trials;
 
     private ExecutorService executorService;
@@ -46,7 +47,7 @@ public class CompareTask extends Task {
         this.trials = trials;
     }
 
-    public void setConfiguration(Configuration configuration)
+    public void setConfiguration(ConfigurationType configuration)
     {
         this.configuration=configuration;
     }
@@ -104,9 +105,7 @@ public class CompareTask extends Task {
 
         trials=new Trial[configuration.getTrials().getTrial().size()];
         Report report=new Report();
-        Report.Trials trialReport=new Report.Trials();
-        trialReport.getTrial().addAll(configuration.getTrials().getTrial());
-        report.setTrials(trialReport);
+        report.setConfiguration(configuration);
         report.setMatches(new Report.Matches());
         report.setErrors(new Report.Errors());
         report.setTool(Barrister.NAME);
@@ -119,7 +118,7 @@ public class CompareTask extends Task {
         for(TrialConfiguration conf:configuration.getTrials().getTrial())
         {
             trials[c]=new Trial();
-            trials[c].setLanguage(Language.resolve(conf.getLanguage().getName(),conf.getLanguage().getVersion()));
+            trials[c].setLanguage(Language.resolve(conf.getTrialType().getName(), conf.getTrialType().getVersion()));
             c++;
         }
         //Execute trials (synchronously)
@@ -156,9 +155,9 @@ public class CompareTask extends Task {
                 {
                     SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                     try {
-                        JAXBContext jc = JAXBContext.newInstance(Configuration.class);
+                        JAXBContext jc = JAXBContext.newInstance(ConfigurationType.class);
                         Unmarshaller unmarshaller = jc.createUnmarshaller();
-                        configuration = (Configuration) unmarshaller.unmarshal(new File(param));
+                        configuration = (ConfigurationType) unmarshaller.unmarshal(new File(param));
                     } catch (JAXBException e) {
                         e.printStackTrace();
                     }

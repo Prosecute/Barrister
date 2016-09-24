@@ -11,72 +11,71 @@ package prosecutor.barrister.gui.panels;
 
 import org.pushingpixels.flamingo.api.common.*;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import org.pushingpixels.flamingo.api.common.model.ActionToggleButtonModel;
 import org.pushingpixels.flamingo.api.ribbon.*;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies;
 import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import prosecutor.barrister.gui.ProjectFrame;
+import prosecutor.barrister.gui.components.LocationTable;
+import prosecutor.barrister.gui.listener.ClickListener;
 import prosecutor.barrister.gui.tabbedPane.CustomTabbedPaneUI;
+import prosecutor.barrister.jaxb.EntitiesLocation;
+import prosecutor.barrister.jaxb.TestMode;
 
 import static prosecutor.barrister.gui.ProjectFrame.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 
 public class TestedFilePanel extends JPanel {
 
-    public RibbonContextualTaskGroup groupTestedFiles;
+    public RibbonContextualTaskGroup group;
+    private LocationTable table;
     public TestedFilePanel() {
         setLayout(new GridLayout(1, 2, 10, 10));
 
 
         JTree tree = new JTree(addNodes(null, new File("D://Dokumenty/Projekt/Gitlab/Prosecutor/modules/Barrister/src/main/resources/prosecutor/barrister/oxygen/32x32/actions")));
 
-        TitledPanel subs=new TitledPanel(R().getString("SelectedSubmissions"),new Color(51,51,221),new JScrollPane(tree));
+        TitledPanel subs=new TitledPanel(R().getString("SelectedSubmissions"),new JScrollPane(tree));
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        String[] columnNames = {R().getString("TableFilesID"),
-                R().getString("TableFilesName"),
-                R().getString("TableFilesURL"),
-                R().getString("TableFilesDirect"),
-                R().getString("TableFilesMode")
-
-        };
-        Object[][] data = {
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)}
-        };
         tabbedPane.addTab(ProjectFrame.R().getString("Info"), new JPanel());
         tabbedPane.addTab(ProjectFrame.R().getString("Filters"), new JPanel());
         tabbedPane.setUI(new CustomTabbedPaneUI());
-        TitledPanel properties=new TitledPanel(R().getString("Properties"),new Color(221,51 ,51),tabbedPane);
-        JTable table = new JTable(data, columnNames);
-        table.getColumnModel().getColumn(0).setMaxWidth(50);
-        table.getColumnModel().getColumn(0).setMinWidth(50);
-        table.getColumnModel().getColumn(3).setMaxWidth(50);
-        table.getColumnModel().getColumn(3).setMinWidth(50);
-        table.getColumnModel().getColumn(4).setMaxWidth(50);
-        table.getColumnModel().getColumn(4).setMinWidth(50);
-        table.getColumnModel().getColumn(1).setWidth(100);
+        tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
+        TitledPanel properties=new TitledPanel(R().getString("Properties"),tabbedPane);
+
+        ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation() {{
+            this.direct = true;
+            this.entitiesLocationID = new BigInteger("0");
+            this.mode = TestMode.COMPARE;
+            this.path = "test/Test/test";
+        }});
+        ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation() {{
+            this.direct = false;
+            this.entitiesLocationID = new BigInteger("1");
+            this.mode = TestMode.TEST;
+            this.path = "C://test";
+        }});
+
+        table = new LocationTable(this);
         JScrollPane JScrollPane1 = new JScrollPane(table);
         JScrollPane1.setViewportView(table);
-        table.setFillsViewportHeight(true);
-        TitledPanel tables=new TitledPanel(R().getString("Locations"),new Color(51,221,51),JScrollPane1);
+        TitledPanel tables=new TitledPanel(R().getString("Locations"),JScrollPane1);
 
         add(tables);
         JPanel panel = new JPanel();
@@ -118,24 +117,65 @@ public class TestedFilePanel extends JPanel {
             curDir.add(new DefaultMutableTreeNode(files.elementAt(fnum)));
         return curDir;
     }
+    JRibbonBand bandNew,bandActions,bandCleanUp,bandProperties;
+    JCommandButton buttonAddLocation,buttonDuplicate,buttonMoveUp,buttonMoveDown,buttonMoveTop,buttonMoveBottom,buttonRemoveLocation,
+            buttonClearLocations,buttonFolderSync;
+    JCommandToggleButton buttonDirect,buttonMode;
     public void setupRibbon()
     {
 
-        JRibbonBand bandNew = new JRibbonBand(R().getString("New"), null);
-        JRibbonBand bandActions = new JRibbonBand(R().getString("Actions"), null);
-        JRibbonBand bandCleanUp = new JRibbonBand(R().getString("CleanUp"), null);
-        JRibbonBand bandProperties = new JRibbonBand(R().getString("Properties"), null);
-        JCommandButton buttonAddLocation = new JCommandButton(R().getString("AddLocation"), getResizableIconFromResource("oxygen/32x32/actions/folder-new.png"));
-        JCommandButton buttonDuplicate = new JCommandButton(R().getString("DuplicateLocation"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
-        JCommandButton buttonMoveUp = new JCommandButton(R().getString("MoveUp"), getResizableIconFromResource("oxygen/32x32/actions/go-up.png"));
-        JCommandButton buttonMoveDown = new JCommandButton(R().getString("MoveDown"), getResizableIconFromResource("oxygen/32x32/actions/go-down.png"));
-        JCommandButton buttonMoveTop = new JCommandButton(R().getString("MoveTop"), getResizableIconFromResource("oxygen/32x32/actions/go-top.png"));
-        JCommandButton buttonMoveBottom = new JCommandButton(R().getString("MoveBottom"), getResizableIconFromResource("oxygen/32x32/actions/go-bottom.png"));
-        JCommandButton buttonRemoveLocation = new JCommandButton(R().getString("DeleteLocation"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
-        JCommandButton buttonClearLocations = new JCommandButton(R().getString("DeleteAllLocations"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
-        JCommandButton buttonFolderSync = new JCommandButton(R().getString("SyncLocation"), getResizableIconFromResource("oxygen/32x32/actions/folder-sync.png"));
-        JCommandToggleButton buttonDirect = new JCommandToggleButton(R().getString("Direct"), getResizableIconFromResource("oxygen/32x32/places/document-multiple.png"));
-        JCommandToggleButton buttonMode = new JCommandToggleButton(R().getString("CompareOnly"), getResizableIconFromResource("oxygen/32x32/actions/zoom-next.png"));
+        bandNew = new JRibbonBand(R().getString("New"), null);
+        bandActions = new JRibbonBand(R().getString("Actions"), null);
+        bandCleanUp = new JRibbonBand(R().getString("CleanUp"), null);
+        bandProperties = new JRibbonBand(R().getString("Properties"), null);
+        buttonAddLocation = new JCommandButton(R().getString("AddLocation"), getResizableIconFromResource("oxygen/32x32/actions/folder-new.png"));
+        buttonDuplicate = new JCommandButton(R().getString("DuplicateLocation"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
+        buttonMoveUp = new JCommandButton(R().getString("MoveUp"), getResizableIconFromResource("oxygen/32x32/actions/go-up.png"));
+        buttonMoveDown = new JCommandButton(R().getString("MoveDown"), getResizableIconFromResource("oxygen/32x32/actions/go-down.png"));
+        buttonMoveTop = new JCommandButton(R().getString("MoveTop"), getResizableIconFromResource("oxygen/32x32/actions/go-top.png"));
+        buttonMoveBottom = new JCommandButton(R().getString("MoveBottom"), getResizableIconFromResource("oxygen/32x32/actions/go-bottom.png"));
+        buttonRemoveLocation = new JCommandButton(R().getString("DeleteLocation"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
+        buttonClearLocations = new JCommandButton(R().getString("DeleteAllLocations"), getResizableIconFromResource("oxygen/32x32/places/folder.png"));
+        buttonFolderSync = new JCommandButton(R().getString("SyncLocation"), getResizableIconFromResource("oxygen/32x32/actions/folder-sync.png"));
+        buttonDirect = new JCommandToggleButton(R().getString("Direct"), getResizableIconFromResource("oxygen/32x32/places/document-multiple.png"));
+        buttonMode = new JCommandToggleButton(R().getString("CompareOnly"), getResizableIconFromResource("oxygen/32x32/actions/zoom-next.png"));
+
+
+        buttonAddLocation.addMouseListener(new ClickListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation());
+                table.addNewLine();
+                setActive(ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().size());
+
+            }
+        });
+        buttonDuplicate.addMouseListener(new ClickListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(table.getSelectedRow()<0)
+                    return;
+                ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().get(table.getSelectedRow());
+
+            }
+        });
+        buttonRemoveLocation.addMouseListener(new ClickListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (table.getSelectedRow() < 0)
+                    return;
+                ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().remove(table.getSelectedRow());
+                int i = table.getSelectedRow();
+                table.removeLine(i);
+                if (i > 0) i--;
+                else if (table.getRowCount() > i)
+                {}
+                else
+                    return;
+                table.setRowSelectionInterval(i,i);
+            }
+        });
+
         bandNew.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.Mirror(bandNew.getControlPanel())));
         bandActions.setResizePolicies((List) Arrays.asList(
@@ -147,19 +187,56 @@ public class TestedFilePanel extends JPanel {
 
         bandNew.addCommandButton(buttonAddLocation, RibbonElementPriority.TOP);
         bandActions.addCommandButton(buttonDuplicate,RibbonElementPriority.TOP);
+        bandActions.addCommandButton(buttonRemoveLocation,RibbonElementPriority.TOP);
         bandActions.addCommandButton(buttonMoveTop, RibbonElementPriority.TOP);
         bandActions.addCommandButton(buttonMoveUp, RibbonElementPriority.TOP);
         bandActions.addCommandButton(buttonMoveDown, RibbonElementPriority.TOP);
         bandActions.addCommandButton(buttonMoveBottom, RibbonElementPriority.TOP);
-        bandCleanUp.addCommandButton(buttonRemoveLocation,RibbonElementPriority.TOP);
         bandCleanUp.addCommandButton(buttonFolderSync,RibbonElementPriority.MEDIUM);
         bandCleanUp.addCommandButton(buttonClearLocations,RibbonElementPriority.MEDIUM);
         bandProperties.addCommandButton(buttonDirect,RibbonElementPriority.TOP);
         bandProperties.addCommandButton(buttonMode,RibbonElementPriority.TOP);
 
         RibbonTask taskTestedFiles = new RibbonTask(ProjectFrame.R().getString("Files"), bandNew,bandActions,bandCleanUp,bandProperties);
-        groupTestedFiles = new RibbonContextualTaskGroup(ProjectFrame.R().getString("TestedFiles"), SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.GENERAL).getSelectionForegroundColor(),
+        group = new RibbonContextualTaskGroup(ProjectFrame.R().getString("TestedFiles"), Color.yellow,
                 taskTestedFiles );
+        refreshRibbonState();
     }
 
+    public void refreshRibbonState()
+    {
+        int s=ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().size();
+        boolean b1=false,b2=true;
+        if(s>0)
+            b1=true;
+        buttonDuplicate.setEnabled(b1);
+        buttonClearLocations.setEnabled(b1);
+        buttonFolderSync.setEnabled(b1);
+        if(table.getSelectedRow()<0)
+            b2=false;
+        else
+        {
+            EntitiesLocation l=ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().get(table.getSelectedRow());
+            ((ActionToggleButtonModel) buttonDirect.getActionModel()).setPressed(l.isDirect());
+            ((ActionToggleButtonModel)buttonMode.getActionModel()).setPressed(l.getMode()==TestMode.COMPARE);
+        }
+        buttonDuplicate.setEnabled(b2);
+        buttonMoveUp.setEnabled(b2);
+        buttonMoveDown.setEnabled(b2);
+        buttonMoveTop.setEnabled(b2);
+        buttonMoveBottom.setEnabled(b2);
+        buttonRemoveLocation.setEnabled(b2);
+        buttonDirect.setEnabled(b2);
+        buttonMode.setEnabled(b2);
+
+    }
+
+    public void refreshTable()
+    {
+
+    }
+    public void setActive(int i)
+    {
+
+    }
 }

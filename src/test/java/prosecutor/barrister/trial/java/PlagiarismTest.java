@@ -16,7 +16,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
 import prosecutor.barrister.Barrister;
-import prosecutor.barrister.jaxb.Configuration;
+import prosecutor.barrister.jaxb.ConfigurationType;
 import prosecutor.barrister.jaxb.Report;
 import prosecutor.barrister.languages.Tokens;
 import prosecutor.barrister.report.logger.L;
@@ -35,7 +35,7 @@ import static org.testng.Assert.assertNotNull;
 @Test(singleThreaded = true)
 public class PlagiarismTest {
 
-    Configuration configuration=null;
+    ConfigurationType configuration=null;
     Report report;
 
     @BeforeTest
@@ -55,9 +55,9 @@ public class PlagiarismTest {
         String _filelocation="src/test/resources/language/java/inputConfPlagiarismTesting.xml";
         String _err0="Configuration loaded from location '"+_filelocation+"' is null.";
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        JAXBContext jc = JAXBContext.newInstance(Configuration.class);
+        JAXBContext jc = JAXBContext.newInstance(ConfigurationType.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
-        configuration = (Configuration) unmarshaller.unmarshal(new File(_filelocation));
+        configuration = (ConfigurationType) unmarshaller.unmarshal(new File(_filelocation));
         assertNotNull(configuration!=null,_err0);
     }
 

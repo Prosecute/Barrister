@@ -10,7 +10,6 @@ package prosecutor.barrister.report.logger;
 
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.jaxb.ConsoleLine;
 import prosecutor.barrister.jaxb.Match;
 import prosecutor.barrister.jaxb.Report;

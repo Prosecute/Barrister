@@ -12,7 +12,7 @@ package prosecutor.barrister.input;
 import org.testng.annotations.Test;
 import static org.testng.Assert.*;
 import org.xml.sax.SAXException;
-import prosecutor.barrister.jaxb.Configuration;
+import prosecutor.barrister.jaxb.ConfigurationType;
 import prosecutor.barrister.jaxb.TrialConfiguration;
 import prosecutor.barrister.trial.Trial;
 
@@ -28,16 +28,16 @@ import java.net.URL;
 
 public class InputFileValidationTest {
 
-    Configuration configuration=null;
+    ConfigurationType configuration=null;
     @Test(groups = "init", description = "Tries to load configuration using Unmarshaller and JAXBContext.")
     public void configurationLoaded() throws SAXException, MalformedURLException, JAXBException
     {
         String _filelocation="src/test/resources/inputConfigurations/inputConf0.xml";
         String _err0="Configuration loaded from location '"+_filelocation+"' is null.";
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        JAXBContext jc = JAXBContext.newInstance(Configuration.class);
+        JAXBContext jc = JAXBContext.newInstance(ConfigurationType.class);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
-        configuration = (Configuration) unmarshaller.unmarshal(new File(_filelocation));
+        configuration = (ConfigurationType) unmarshaller.unmarshal(new File(_filelocation));
         assertNotNull(configuration!=null,_err0);
     }
 
@@ -62,8 +62,8 @@ public class InputFileValidationTest {
         assertTrue(configuration.getTrials().getTrial().size()!=1,_err0);
         assertTrue(configuration.getTrials().getTrial().get(0)!=null,_err1);
         TrialConfiguration trial=configuration.getTrials().getTrial().get(0);
-        assertTrue(trial.getLanguage().getName().equals("java"),_err1);
-        assertTrue(trial.getLanguage().getVersion().equals("1.8"),_err1);
+        assertTrue(trial.getTrialType().getName().equals("java"),_err1);
+        assertTrue(trial.getTrialType().getVersion().equals("1.8"),_err1);
         assertTrue(trial.getTrialName().equals("FirstTrial"),_err1);
 
     }

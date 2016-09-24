@@ -9,6 +9,8 @@ package prosecutor.barrister.gui.panels;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.gui.components.FButton;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -35,19 +37,22 @@ public class ProjectOverviewPanel extends JPanel {
         add(label,c);
 
         c.weighty=1;
-        TitledPanel description=new TitledPanel(R().getString("ProjectDescription"),new Color(54,221,54),null);
+        TitledPanel description=new TitledPanel(R().getString("ProjectDescription"),null);
         c.gridx=0;
         c.gridy=1;
         add(description,c);
 
 
 
-        TitledPanel empty=new TitledPanel(R().getString("ProjectDescription"),new Color(221,54,54),null);
+        TitledPanel empty=new TitledPanel(R().getString("ProjectDescription"),null);
         c.gridx=0;
         c.gridy=2;
         add(empty,c);
 
-        TitledPanel metrics=new TitledPanel(R().getString("ProjectOptions"),new Color(54,54,221),null);
+        TitledPanel metrics=new TitledPanel(R().getString("ProjectOptions"),new ProjectOptionsPanel(),
+                new FButton(R().getString("AddOption"),getIconIO("oxygen/16x16/list-add.png")),
+                new FButton(R().getString("ChangeOption"),getIconIO("oxygen/16x16/configure.png")),
+                new FButton(R().getString("RemoveOption"),getIconIO("oxygen/16x16/list-remove.png")));
         c.gridx=1;
         c.gridy=1;
         c.gridheight=2;

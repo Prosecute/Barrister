@@ -33,8 +33,9 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        selectColor = new Color(250, 192, 192);
-        deSelectColor = new Color(197, 193, 168);
+
+        selectColor =new Color(149, 179, 215);
+        deSelectColor =new Color(200, 210, 222);
         tabAreaInsets.right = anchoCarpetas;
     }
 
@@ -106,7 +107,9 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
             case BOTTOM:
                 xp = new int[]{x, x, x + 3, x + w - inclTab - 6, x + w - inclTab - 2, x + w - inclTab, x + w - 3, x};
                 yp = new int[]{y, y + h - 3, y + h, y + h, y + h - 1, y + h - 3, y, y};
-                gradientShadow = new GradientPaint(x, y, new Color(100, 100, 255), x, y + h, Color.BLUE);
+                xp = new int[]{x, x, x + w -inclTab - 12,x + w -inclTab - 10,x + w -inclTab - 8, x + w - 2, x + w};
+                yp = new int[]{y, y + h, y + h, y + h -2,y + h -4, y + 4, y};
+                gradientShadow = new GradientPaint(x, y, selectColor, x, y + h, selectColor.darker());
                 break;
             case TOP:
             default:
@@ -123,7 +126,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
         } else {
             if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex)) {
                 g2D.setColor(deSelectColor);
-                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(255, 255, 200), 0, y + h / 2, new Color(240, 255, 210));
+                GradientPaint gradientShadowTmp = new GradientPaint(0, 0, deSelectColor, 0, y + h / 2, deSelectColor.darker());
                 g2D.setPaint(gradientShadowTmp);
             } else {
                 GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(240, 255, 210), 0, y + 15 + h / 2, new Color(204, 204, 204));
@@ -196,7 +199,7 @@ public class CustomTabbedPaneUI extends BasicTabbedPaneUI {
 
     @Override
     protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
-        return 20 + inclTab + super.calculateTabWidth(tabPlacement, tabIndex, metrics);
+        return 24 + inclTab + super.calculateTabWidth(tabPlacement, tabIndex, metrics);
     }
 
     @Override
