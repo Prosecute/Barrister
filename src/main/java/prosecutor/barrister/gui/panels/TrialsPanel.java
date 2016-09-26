@@ -23,6 +23,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies;
 import org.pushingpixels.flamingo.internal.ui.common.popup.PopupPanelUI;
 import prosecutor.barrister.gui.ProjectFrame;
+import prosecutor.barrister.gui.components.TrialTable;
 import prosecutor.barrister.gui.tabbedPane.CustomTabbedPaneUI;
 
 import javax.swing.*;
@@ -56,7 +57,11 @@ public class TrialsPanel extends JPanel {
         previewPane.setUI(new CustomTabbedPaneUI());
         previewPane.setTabPlacement(JTabbedPane.BOTTOM);
 
-        TitledPanel trials=new TitledPanel(R().getString("Trials"),null);
+        TrialTable table=new TrialTable();
+        JScrollPane JScrollPane1 = new JScrollPane(table);
+        JScrollPane1.setViewportView(table);
+
+        TitledPanel trials=new TitledPanel(R().getString("Trials"),JScrollPane1);
         TitledPanel properties=new TitledPanel(R().getString("Properties"),tabbedPane);
         TitledPanel preview=new TitledPanel(R().getString("Preview"),previewPane);
 
