@@ -46,11 +46,27 @@ sourceSets.test.java.srcDir(file("${buildDir}/generated-src/antlr/test"))
 generateGrammarSource {
   println project.configurations.antlr
   source(file("src/main/antlr"))
-  include("*.g4")
+  include("*.g4")                 
+  doLast {
+    copy {
+      from 'build/generated-src/antlr/main/'
+      include '*.*'
+      into 'build/generated-src/antlr/main/prosecutor/barrister/grammar'
+    }
+    project.delete fileTree('build/generated-src/antlr/main').include('*.*')
+  }
 }       
 generateTestGrammarSource {
   source(file("src/test/antlr"))     
-  include("*.g4")
+  include("*.g4")            
+  doLast {
+    copy {
+      from 'build/generated-src/antlr/test/'
+      include '*.*'
+      into 'build/generated-src/antlr/test/prosecutor/barrister/grammar'
+    }
+    project.delete fileTree('build/generated-src/antlr/test').include('*.*')
+  }
 }
 compileJava {  
 }

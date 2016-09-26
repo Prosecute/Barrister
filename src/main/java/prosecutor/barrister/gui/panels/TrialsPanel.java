@@ -21,12 +21,14 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonContextualTaskGroup;
 import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 import org.pushingpixels.flamingo.api.ribbon.RibbonTask;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies;
-import org.pushingpixels.flamingo.internal.ui.common.popup.PopupPanelUI;
 import prosecutor.barrister.gui.ProjectFrame;
 import prosecutor.barrister.gui.components.TrialTable;
+import prosecutor.barrister.gui.forms.SourceCodeTrialDialog;
 import prosecutor.barrister.gui.tabbedPane.CustomTabbedPaneUI;
+import prosecutor.barrister.jaxb.ConfigurationType;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.List;
@@ -38,14 +40,16 @@ import static prosecutor.barrister.gui.ProjectFrame.getResizableIconFromResource
 public class TrialsPanel extends JPanel {
 
     public RibbonContextualTaskGroup group;
-
-    public TrialsPanel()
+    ConfigurationType.Trials trials;
+    TrialTable table;
+    public TrialsPanel(ConfigurationType.Trials trials)
     {
+        this.trials=trials;
         setLayout(new GridLayout(2, 1, 10, 10));
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab(ProjectFrame.R().getString("Info"), new JPanel());
         tabbedPane.addTab(ProjectFrame.R().getString("Options"), new JPanel());
-        tabbedPane.addTab(ProjectFrame.R().getString("Extensions"), new JPanel());
+        tabbedPane.addTab(ProjectFrame.R().getString("FileFilters"), new JInfoPanel(R().getString("NoTrialSelected")));
         tabbedPane.addTab(ProjectFrame.R().getString("BaseCode"), new JPanel());
         tabbedPane.setUI(new CustomTabbedPaneUI());
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
@@ -57,11 +61,19 @@ public class TrialsPanel extends JPanel {
         previewPane.setUI(new CustomTabbedPaneUI());
         previewPane.setTabPlacement(JTabbedPane.BOTTOM);
 
-        TrialTable table=new TrialTable();
+        table=new TrialTable();
+        table.addListSelectionListener(e -> {
+            int i=e.getFirstIndex();
+            if(i<0){
+                tabbedPane.setComponentAt(2, new JInfoPanel(R().getString("NoTrialSelected")));
+                return;
+            }
+            tabbedPane.setComponentAt(2,new FileFilterPanel(trials.getTrial().get(i).getFileFilters()));
+        });
         JScrollPane JScrollPane1 = new JScrollPane(table);
         JScrollPane1.setViewportView(table);
 
-        TitledPanel trials=new TitledPanel(R().getString("Trials"),JScrollPane1);
+        TitledPanel trialsPane=new TitledPanel(R().getString("Trials"),JScrollPane1);
         TitledPanel properties=new TitledPanel(R().getString("Properties"),tabbedPane);
         TitledPanel preview=new TitledPanel(R().getString("Preview"),previewPane);
 
@@ -71,7 +83,7 @@ public class TrialsPanel extends JPanel {
         panel.add(properties);
         panel.add(preview);
         add(panel);
-        add(trials);
+        add(trialsPane);
         setupRibbon();
     }
     public void setupRibbon()
@@ -86,6 +98,14 @@ public class TrialsPanel extends JPanel {
             public JPopupPanel getPopupPanel(JCommandButton commandButton) {
                 JCommandPopupMenu menu=new JCommandPopupMenu();
                 JCommandMenuButton buttonNewSourceCode =new JCommandMenuButton(R().getString("NewSourceCodeTrial"),getResizableIconFromResource("oxygen/32x32/actions/list-add.png"));
+                buttonNewSourceCode.addActionListener(e -> {
+                    SourceCodeTrialDialog dialog = new SourceCodeTrialDialog(null,SwingUtilities.getWindowAncestor(getParent()));
+                    int ret=dialog.showDialog();
+                    if(ret==SourceCodeTrialDialog.RESULT_OK)
+                    {
+                        trials.getTrial().add(dialog.getConfiguration());
+                    }
+                });
                 JCommandMenuButton buttonNewText =new JCommandMenuButton(R().getString("NewTextTrial"),getResizableIconFromResource("oxygen/32x32/actions/list-add.png"));
                 JCommandMenuButton buttonNewImage =new JCommandMenuButton(R().getString("NewImageTrial"),getResizableIconFromResource("oxygen/32x32/actions/list-add.png"));
                 menu.addMenuButton(buttonNewSourceCode);
@@ -96,7 +116,19 @@ public class TrialsPanel extends JPanel {
         });
 
         JCommandButton buttonUpdateTrial = new JCommandButton(R().getString("UpdateTrial"), getResizableIconFromResource("oxygen/32x32/actions/configure.png"));
+        buttonUpdateTrial.addActionListener(e1 -> {
+            int i=table.getSelectedRow();
+            if(i<0) return;
+            SourceCodeTrialDialog dialog = new SourceCodeTrialDialog(trials.getTrial().get(i),SwingUtilities.getWindowAncestor(getParent()));
+            int ret=dialog.showDialog();
+        });
         JCommandButton buttonRemoveTrial = new JCommandButton(R().getString("RemoveTrial"), getResizableIconFromResource("oxygen/32x32/actions/list-remove.png"));
+        buttonRemoveTrial.addActionListener(e -> {
+            int i=table.getSelectedRow();
+            if(i<0) return;
+            trials.getTrial().remove(i);
+            ((DefaultTableModel)table.getModel()).removeRow(i);
+        });
 
 
         bandNew.setResizePolicies((java.util.List) Arrays.asList(

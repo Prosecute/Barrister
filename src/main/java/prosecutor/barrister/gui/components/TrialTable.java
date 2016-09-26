@@ -10,6 +10,7 @@ package prosecutor.barrister.gui.components;
 
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -37,7 +38,11 @@ public class TrialTable extends JTable {
         getColumnModel().getColumn(2).setMaxWidth(150);
         getColumnModel().getColumn(2).setMinWidth(150);
         DefaultTableModel model = (DefaultTableModel) getModel();
-        model.addRow(new Object[]{model.getRowCount(),"Source code trial - Java","Source code","Java (1.8)","Token match"});
+    }
+    public void addListSelectionListener(ListSelectionListener listener)
+    {
+        DefaultListSelectionModel selectionModel=(DefaultListSelectionModel)getSelectionModel();
+        selectionModel.addListSelectionListener(listener);
     }
 
     @Override

@@ -108,7 +108,7 @@ public class ProjectFrame extends JRibbonFrame {
 
         TestedFilePanel testedFilePanel=new TestedFilePanel();
         ReportPanel reportPanel=new ReportPanel(new Report());
-        TrialsPanel trialsPanel=new TrialsPanel();
+        TrialsPanel trialsPanel=new TrialsPanel(Configuration.getTrials());
         this.getRibbon().addContextualTaskGroup(testedFilePanel.group);
         this.getRibbon().addContextualTaskGroup(reportPanel.group);
         this.getRibbon().addContextualTaskGroup(trialsPanel.group);
