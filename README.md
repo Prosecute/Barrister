@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/Prosecute/Barrister.svg?branch=develop)](https://travis-ci.org/Prosecute/Barrister) [![Dependency Status](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f)
+[Czech](READMECZ.md) | **[English](README.md)**
 
 # Barrister
+[![Build Status](https://travis-ci.org/Prosecute/Barrister.svg?branch=develop)](https://travis-ci.org/Prosecute/Barrister) [![Dependency Status](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/57738afc752cd100485bfd7f)
+
 > Non functional (in development)
 
 Barrister is software used for detecting similarity of programs (plagiarism detection).
