@@ -15,7 +15,8 @@ public class TokensMapping {
 
     protected List<FileMeta> filesMapping=new ArrayList<>();
 
-    protected List<Token> tokenList=new ArrayList<>();
+    public List<Token> tokenList=new ArrayList<>();
+
 
     //HACK: Will be removed after solving links between tokens.
     private Map<Integer,List<Integer>> tokenPosition;

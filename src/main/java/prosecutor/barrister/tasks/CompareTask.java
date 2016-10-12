@@ -63,7 +63,7 @@ public class CompareTask extends Task {
 
     @Override
     public String getTaskName() {
-        return "Compare";
+        return "Mode";
     }
 
     @Override

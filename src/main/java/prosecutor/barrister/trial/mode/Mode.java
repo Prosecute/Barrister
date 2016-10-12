@@ -1,4 +1,4 @@
-package prosecutor.barrister.trial.compare;
+package prosecutor.barrister.trial.mode;
 ///////////////////////////////////////////////////////////////////////////////
 //
 //Author: Jiri Fryc
@@ -9,5 +9,5 @@ package prosecutor.barrister.trial.compare;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-public class BaseCompare {
+public interface Mode {
 }

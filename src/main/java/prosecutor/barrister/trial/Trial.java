@@ -31,6 +31,11 @@ public class Trial {
 
     private int trialID;
 
+    public static Trial getCurrent() {
+        return current;
+    }
+    private static Trial current;
+
     public int getTrialID()
     {
         return trialID;
@@ -48,6 +53,7 @@ public class Trial {
 
     public void execute(ExecutorService service,SubmissionManager manager)
     {
+        current=this;
         Page<Submission> tested=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(true,false));
         Page<Submission> compared=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(false,true));
         //Comparing tested<->compared

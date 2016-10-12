@@ -12,6 +12,7 @@ package prosecutor.barrister.report.logger;
 import prosecutor.barrister.jaxb.ConsoleLine;
 import prosecutor.barrister.jaxb.Match;
 import prosecutor.barrister.submissions.Submission;
+import prosecutor.barrister.submissions.tokens.Token;
 import prosecutor.barrister.trial.Trial;
 import prosecutor.barrister.trial.tiling.GSTilingExtended;
 
@@ -41,12 +42,23 @@ public class MatchLogger {
         trialMatch.setTrialID(trial.getTrialID());
         trialMatch.setConsoleOutput(console);
         Match.TrialMatches.TrialMatch.TokenMatches tokenMatches=new Match.TrialMatches.TrialMatch.TokenMatches();
-        List<Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch> rangeMatch=tokenMatches.getRangeMatch();
         for(GSTilingExtended.Match match:matches)
             tokenMatches.getRangeMatch().add(match.toRangeMatch());
         trialMatch.setTokenMatches(tokenMatches);
         output.getTrialMatches().getTrialMatch().add(trialMatch);
-
+        List<Token> list=subA.getSubmissionTokens().tokenList;
+        boolean[] marked=new boolean[list.size()];
+        for(GSTilingExtended.Match match:matches)
+        {
+            for(int i=match.PositionTokenA;i<match.PositionTokenA+match.Length;i++)
+            {
+                marked[i]=true;
+            }
+        }
+        int mark=0;
+        for(boolean b:marked)
+            if(b)mark++;
+        int res=(mark/list.size())*100;
         console=new Match.TrialMatches.TrialMatch.ConsoleOutput();
     }
 

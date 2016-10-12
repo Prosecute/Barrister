@@ -48,7 +48,7 @@ public class TestedFilePanel extends JPanel {
         setLayout(new GridLayout(1, 2, 10, 10));
 
 
-        JTree tree = new JTree(addNodes(null, new File("D://Dokumenty/Projekt/Gitlab/Prosecutor/modules/Barrister/src/main/resources/prosecutor/barrister/oxygen/32x32/actions")));
+        JTree tree = new JTree(addNodes(null, new File("D://")));
 
         TitledPanel subs=new TitledPanel(R().getString("SelectedSubmissions"),new JScrollPane(tree));
 

@@ -42,7 +42,7 @@ public class LocationTable extends JTable{
                 R().getString("TableFilesDirect")},0));
         JComboBox modeBox = new JComboBox();
         modeBox.addItem("Test");
-        modeBox.addItem("Compare");
+        modeBox.addItem("Mode");
         JCheckBox checkBox =new JCheckBox();
         getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(checkBox));
         getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer());
