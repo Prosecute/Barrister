@@ -19,12 +19,25 @@ public abstract class Language {
     static
     {
         List<LanguageWrapper> _wrappers=new ArrayList<>();
-        _wrappers.add(new LanguageWrapper(JavaLanguage.class,"java","Java","1.8"));
+        LanguageWrapper wrapper=new LanguageWrapper(JavaLanguage.class,"java","Java","1.8");
+        wrapper.setSupportedVersions("1.7","1.6","1.5","1.4","1.3","1.2","8","7","6","5","4","3","2");
+        wrapper.setUnsupportedVersions("1.9","9");
+
+        _wrappers.add(wrapper);
         Language.languageWrappers=_wrappers;
     }
 
     private static List<LanguageWrapper> languageWrappers;
 
+    public static String[] getLanguageCodes()
+    {
+        String[] s=new String[languageWrappers.size()];
+        for(int i=0;i<languageWrappers.size();i++)
+        {
+            s[i]=languageWrappers.get(i).id();
+        }
+        return s;
+    }
 
     public static Language resolve(String name,String version)
     {

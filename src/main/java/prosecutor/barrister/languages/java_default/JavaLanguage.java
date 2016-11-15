@@ -20,6 +20,6 @@ public class JavaLanguage extends Language {
 
     @Override
     public Parser getParser() {
-        return null;
+        return new JavaParser();
     }
 }
