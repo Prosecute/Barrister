@@ -9,6 +9,7 @@ package prosecutor.barrister.gui.forms;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.gui.panels.trials.sourcecode.SourceCodeMainPanel;
 import prosecutor.barrister.jaxb.TrialConfiguration;
 
 import javax.swing.*;
@@ -58,8 +59,8 @@ public class SourceCodeTrialDialog extends JDialog {
         bottom.add(buttonCancel);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel panelTrial = new JPanel();
-
+        JPanel panelTrial = new SourceCodeMainPanel();
+        tabbedPane.add("Main",panelTrial);
         add(tabbedPane, BorderLayout.CENTER);
         add(bottom,BorderLayout.AFTER_LAST_LINE);
     }

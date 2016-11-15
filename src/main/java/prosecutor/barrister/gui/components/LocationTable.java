@@ -94,7 +94,7 @@ public class LocationTable extends JTable{
         //TODO location.setName
         location.setPath((String)this.getValueAt(i,2));
         location.setDirect((Boolean)this.getValueAt(i,3));
-        location.setMode(TestMode.fromValue((String)this.getValueAt(i,4)));
+        location.setMode(TestMode.fromValue(((String)this.getValueAt(i,4)).toLowerCase()));
     }
 
     public void rebuildLine(EntitiesLocation location)

@@ -66,7 +66,7 @@ public class PlagiarismTest {
     {
         CompareTask task=new CompareTask();
         task.setConfiguration(configuration);
-        report=task.getReport();
+        report=task.generateReport();
         assertNotNull(report);
 
     }

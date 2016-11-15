@@ -13,7 +13,10 @@ import prosecutor.barrister.languages.Tokens;
 import prosecutor.barrister.tasks.Options;
 import prosecutor.barrister.tasks.Task;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Barrister {
     public static String NAME="Barrister";
@@ -22,6 +25,11 @@ public class Barrister {
     private static void response404()
     {
         Task.resolve("help").setActive().run();
+    }
+
+    public static ResourceBundle R()
+    {
+        return ResourceBundle.getBundle("prosecutor/barrister/lang/Lang", Locale.ENGLISH);
     }
 
     public static void main(String... args)

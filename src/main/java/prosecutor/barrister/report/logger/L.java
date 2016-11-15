@@ -55,9 +55,8 @@ public class L {
         line.setLevel(level.name().toUpperCase());
         line.setSource(source);
 
-        //FIXME
         GregorianCalendar c = new GregorianCalendar();
-        c.setTime(new Date(System.currentTimeMillis()/1000L));
+        c.setTime(new Date());
         try {
             line.setTime(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
         } catch (DatatypeConfigurationException e) {

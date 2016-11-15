@@ -19,6 +19,7 @@ import prosecutor.barrister.report.logger.Logger;
 import prosecutor.barrister.submissions.SubmissionManager;
 import prosecutor.barrister.submissions.SubmissionsLocation;
 import prosecutor.barrister.trial.Trial;
+import prosecutor.barrister.utils.TimeUtils;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -28,8 +29,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.*;
+
+import static prosecutor.barrister.Barrister.*;
 
 @Logger(name = "Task-Compare")
 public class CompareTask extends Task {
@@ -96,28 +100,28 @@ public class CompareTask extends Task {
         report.setErrors(new Report.Errors());
         report.setTool(Barrister.NAME);
         report.setVersion(Barrister.VERSION);
-        report.setGenerated(XMLGregorianCalendarImpl.createDateTime(d.getYear(),d.getMonth(),d.getDay(),d.getHours(),d.getMinutes(),d.getSeconds()));
+        report.setGenerated(TimeUtils.getNow());
         L.setReport(report);
-        L.logInfo("Preparing for testing");
+        L.logInfo(R().getString("logPrepare"));
         //Prepare threading
         LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue();
         executorService=new ThreadPoolExecutor(Options.RUNTIME_THREAD_COUNT,Options.RUNTIME_THREAD_COUNT,0L, TimeUnit.MILLISECONDS,queue);
         for(EntitiesLocation loc:configuration.getEntitiesLocations().getEntitiesLocation()) {
             if(!Paths.get(loc.getPath()).toFile().exists())
             {
-                L.logWarn("Location: "+loc.getName()+"("+loc.getPath()+") doesn´t exist. Excluding from testing.");
+                L.logWarn(MessageFormat.format(R().getString("warnPathDoesntExist"),loc.getName(),loc.getPath()));
             }
             else
                 submissionManager.addLocation(new SubmissionsLocation(Paths.get(loc.getPath()), loc.isDirect(), true, loc.getMode() == TestMode.TEST));
         }
         if(submissionManager.getSubmissionCount()==0)
         {
-            L.logFatal("No submissions for testing. Shutting down.");
+            L.logFatal(R().getString("fatalNoSubmissions"));
             return report;
         }
         if(configuration.getTrials().getTrial().isEmpty())
         {
-            L.logFatal("No trials found. Shutting down.");
+            L.logFatal(R().getString("fatalNoTrials"));
             return report;
         }
 
@@ -127,7 +131,7 @@ public class CompareTask extends Task {
             if(conf.getTrialID()!=null)
                 if(usedID.contains(conf.getTrialID())) {
                     conf.setTrialID(null);
-                    L.logWarn("Multiple same trial ID found. Trying to repair.");
+                    L.logWarn(R().getString("warnMultipleIDTrial"));
                 }
                 else {
                     usedID.add(conf.getTrialID());
@@ -140,7 +144,7 @@ public class CompareTask extends Task {
             while(usedID.contains(c))
                 c++;
             conf.setTrialID(c);
-            L.logInfo("Adding trial ID");
+            L.logInfo(R().getString("infoTrialAddID"));
         }
         trials=new Trial[configuration.getTrials().getTrial().size()];
         //TODO add EntityLocations
@@ -152,15 +156,14 @@ public class CompareTask extends Task {
             trials[c].setLanguage(Language.resolve(conf.getTrialType().getName(), conf.getTrialType().getVersion()));
             c++;
         }
-        L.logInfo("Executing trials");
+        L.logInfo(R().getString("infoExecute"));
         //Execute trials (synchronously)
         for(Trial trial:trials)
         {
             trial.execute(executorService,submissionManager);
         }
-        L.logInfo("Execution complete");
-        Date d2=new Date();
-        report.setGenerateTime(XMLGregorianCalendarImpl.createDateTime(1, 1, 1, d2.getHours()-d.getHours(), d2.getMinutes()-d.getMinutes(), d2.getSeconds()-d.getSeconds()));
+        L.logInfo(R().getString("infoExecuted"));
+        report.setGenerateTime(TimeUtils.getNow());
         return report;
     }
 

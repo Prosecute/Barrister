@@ -10,6 +10,7 @@ package prosecutor.barrister.trial;
 
 
 import prosecutor.barrister.Barrister;
+import static prosecutor.barrister.Barrister.*;
 import prosecutor.barrister.filters.SubmissionLocationFilter;
 import prosecutor.barrister.report.logger.L;
 import prosecutor.barrister.report.logger.Logger;
@@ -21,6 +22,7 @@ import prosecutor.barrister.trial.runnable.CompareRunnable;
 import prosecutor.barrister.trial.runnable.TokenizeRunnable;
 import prosecutor.barrister.utils.Page;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
@@ -57,7 +59,7 @@ public class Trial {
     {
         current=this;
         L.logInfo("===================================");
-        L.logInfo("    Using options:");
+        L.logInfo("    "+R().getString("infoUsing"));
         L.logInfo("CACHE_ACTIVE_LIMIT:     "+Options.CACHE_ACTIVE_LIMIT);
         L.logInfo("CACHE_ONEWAY_LIMIT:     "+Options.CACHE_ONEWAY_LIMIT);
         L.logInfo("RUNTIME_COMPARE_SPLIT:  "+Options.RUNTIME_COMPARE_SPLIT);
@@ -71,7 +73,7 @@ public class Trial {
         int iter_t=0,iter_c=0;
         while (true)
         {
-            L.logDebug("Starting "+iter_t+" testing iteration.");
+            L.logDebug(MessageFormat.format(R().getString("debugIterationTested"),iter_t));
             if(tested.hasNextPage()) {
                 tested = tested.nextPage();
                 tokenize(service,tested.getElements());
@@ -81,7 +83,7 @@ public class Trial {
             //Iterating compared
             while (true)
             {
-                L.logDebug("Starting "+iter_t+"-"+iter_c+" compare iteration.");
+                L.logDebug(MessageFormat.format(R().getString("debugIterationCompared"),iter_t,iter_c));
                 if(compared.hasNextPage()) {
                     compared = compared.nextPage();
                 }
