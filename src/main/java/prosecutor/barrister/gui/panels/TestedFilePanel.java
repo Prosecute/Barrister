@@ -59,18 +59,6 @@ public class TestedFilePanel extends JPanel {
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
         TitledPanel properties=new TitledPanel(R().getString("Properties"),tabbedPane);
 
-        ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation() {{
-            this.direct = true;
-            this.entitiesLocationID = new BigInteger("0");
-            this.mode = TestMode.COMPARE;
-            this.path = "test/Test/test";
-        }});
-        ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation() {{
-            this.direct = false;
-            this.entitiesLocationID = new BigInteger("1");
-            this.mode = TestMode.TEST;
-            this.path = "C://test";
-        }});
 
         table = new LocationTable(this);
         JScrollPane JScrollPane1 = new JScrollPane(table);

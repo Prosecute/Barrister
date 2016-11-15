@@ -23,8 +23,10 @@ import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import org.pushingpixels.substance.api.skin.SubstanceMistAquaLookAndFeel;
 import org.pushingpixels.substance.internal.utils.SubstanceColorResource;
 import prosecutor.barrister.gui.panels.*;
-import prosecutor.barrister.jaxb.ConfigurationType;
+import prosecutor.barrister.jaxb.Configuration;
 import prosecutor.barrister.jaxb.Report;
+import prosecutor.barrister.report.logger.L;
+import prosecutor.barrister.tasks.CompareTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -41,19 +43,26 @@ import java.util.ResourceBundle;
 public class ProjectFrame extends JRibbonFrame {
 
     public static Locale CurrentLocale= Locale.ENGLISH;
-    private static ConfigurationType Configuration;
-    public static ConfigurationType Configuration()
+    private static Configuration Configuration;
+    private static Report report;
+    public static File ProjectFolder=null;
+    public static File ConfigurationFile=null;
+    public static Configuration Configuration()
     {
         if(Configuration==null) {
-            Configuration = new ConfigurationType();
-            Configuration.setEntitiesLocations(new ConfigurationType.EntitiesLocations());
-            Configuration.setTrials(new ConfigurationType.Trials());
+            Configuration = new Configuration();
+            Configuration.setEntitiesLocations(new Configuration.EntitiesLocations());
+            Configuration.setTrials(new Configuration.Trials());
         }
         return Configuration;
     }
-    public static void setConfiguration(ConfigurationType conf)
+    public static Report Report()
     {
-        Configuration = conf;
+        return report;
+    }
+    public static void setConfiguration(Configuration conf)
+    {
+        ProjectFrame.Configuration = conf;
     }
     private static ProjectFrame Instance;
     public static ProjectFrame Instance()
@@ -73,8 +82,21 @@ public class ProjectFrame extends JRibbonFrame {
 
         JRibbonBand band2 = new JRibbonBand(R().getString("Report"), null);
         JCommandButton button1 = new JCommandButton(R().getString("Generate"), getResizableIconFromResource("oxygen/32x32/actions/run-build.png"));
+        button1.addActionListener(l -> {
+            CompareTask task=new CompareTask();
+            task.setConfiguration(Configuration);
+            report=task.generateReport();
+            report=report;
+        });
         JCommandButton button2 = new JCommandButton(R().getString("CleanGenerate"), getResizableIconFromResource("oxygen/32x32/actions/run-build-clean.png"));
         JCommandButton button3 = new JCommandButton(R().getString("Debug"), getResizableIconFromResource("oxygen/32x32/actions/debug-run.png"));
+        button3.addActionListener(l -> {
+            L.debug=true;
+            CompareTask task=new CompareTask();
+            task.setConfiguration(Configuration);
+            report=task.generateReport();
+            report=report;
+        });
         JCommandButton button4 = new JCommandButton(R().getString("GenerateToFile"), getResizableIconFromResource("oxygen/32x32/actions/run-build-file.png"));
         JCommandButton button5 = new JCommandButton(R().getString("GenerateConfigure"), getResizableIconFromResource("oxygen/32x32/actions/run-build-configure.png"));
         band2.addCommandButton(button1,RibbonElementPriority.TOP);

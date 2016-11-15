@@ -26,7 +26,7 @@ public class TemplateJava {
 
         TrialConfiguration trialConfiguration =new TrialConfiguration();
         TrialConfiguration.TrialType trialType=new TrialConfiguration.TrialType();
-        trialType.setCategory(TrialCategory.SOURCE_CODE);
+        trialType.setCategory(TrialCategory.SOURCECODE);
         trialType.setMode("TokenMatch");
         trialType.setName("Java");
         trialType.setVersion("1.8");

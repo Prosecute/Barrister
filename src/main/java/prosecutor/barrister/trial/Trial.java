@@ -11,6 +11,8 @@ package prosecutor.barrister.trial;
 
 import prosecutor.barrister.Barrister;
 import prosecutor.barrister.filters.SubmissionLocationFilter;
+import prosecutor.barrister.report.logger.L;
+import prosecutor.barrister.report.logger.Logger;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.languages.Language;
 import prosecutor.barrister.submissions.SubmissionManager;
@@ -23,7 +25,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.concurrent.*;
-
+@Logger(name="Trial")
 public class Trial {
 
 
@@ -54,12 +56,22 @@ public class Trial {
     public void execute(ExecutorService service,SubmissionManager manager)
     {
         current=this;
+        L.logInfo("===================================");
+        L.logInfo("    Using options:");
+        L.logInfo("CACHE_ACTIVE_LIMIT:     "+Options.CACHE_ACTIVE_LIMIT);
+        L.logInfo("CACHE_ONEWAY_LIMIT:     "+Options.CACHE_ONEWAY_LIMIT);
+        L.logInfo("RUNTIME_COMPARE_SPLIT:  "+Options.RUNTIME_COMPARE_SPLIT);
+        L.logInfo("RUNTIME_THREAD_COUNT:   "+Options.RUNTIME_THREAD_COUNT);
+        L.logInfo("RUNTIME_TOKENIZE_SPLIT: "+Options.RUNTIME_TOKENIZE_SPLIT);
+        L.logInfo("===================================");
         Page<Submission> tested=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(true,false));
         Page<Submission> compared=manager.getPage(Options.CACHE_ACTIVE_LIMIT, new SubmissionLocationFilter(false,true));
         //Comparing tested<->compared
         //Iterating tested
+        int iter_t=0,iter_c=0;
         while (true)
         {
+            L.logDebug("Starting "+iter_t+" testing iteration.");
             if(tested.hasNextPage()) {
                 tested = tested.nextPage();
                 tokenize(service,tested.getElements());
@@ -69,6 +81,7 @@ public class Trial {
             //Iterating compared
             while (true)
             {
+                L.logDebug("Starting "+iter_t+"-"+iter_c+" compare iteration.");
                 if(compared.hasNextPage()) {
                     compared = compared.nextPage();
                 }
@@ -79,10 +92,11 @@ public class Trial {
                 }
                 tokenize(service,compared.getElements());
                 compare(service,compared.getElements(),tested.getElements());
+                iter_c++;
             }
+            iter_c=0;
+            iter_t++;
         }
-
-        //Comparing tested<->tested
 
 
     }

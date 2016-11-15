@@ -13,7 +13,10 @@ import org.pushingpixels.flamingo.api.bcb.BreadcrumbBarCallBack;
 import org.pushingpixels.flamingo.api.bcb.BreadcrumbBarException;
 import org.pushingpixels.flamingo.api.bcb.BreadcrumbItem;
 import org.pushingpixels.flamingo.api.common.StringValuePair;
+import prosecutor.barrister.gui.panels.report.ReportConfigurationPanel;
+import prosecutor.barrister.gui.panels.report.ReportConsolePanel;
 import prosecutor.barrister.gui.panels.report.ReportOverviewPanel;
+import prosecutor.barrister.gui.panels.report.ReportXMLPanel;
 import prosecutor.barrister.jaxb.Report;
 
 import javax.swing.*;
@@ -26,13 +29,31 @@ public class ReportBreadcrumb extends BreadcrumbBarCallBack<ReportBreadcrumb.RBL
 
     private Report report;
     public final RBLeafCore core;
-    private JComponent Overview,Matches,Console,Configuration;
+    private JComponent Overview,Matches,Console,Configuration,Xml;
 
     public JComponent getOverview()
     {
         if(Overview==null)
             Overview=new ReportOverviewPanel();
         return Overview;
+    }
+    public JComponent getConsole()
+    {
+        if(Console==null)
+            Console = new ReportConsolePanel();
+        return Console;
+    }
+    public JComponent getConfiguration()
+    {
+        if(Configuration==null)
+            Configuration = new ReportConfigurationPanel();
+        return Configuration;
+    }
+    public JComponent getXmlView()
+    {
+        if(Xml==null)
+            Xml= new ReportXMLPanel();
+        return Xml;
     }
 
     public ReportBreadcrumb(Report report)
@@ -87,6 +108,7 @@ public class ReportBreadcrumb extends BreadcrumbBarCallBack<ReportBreadcrumb.RBL
             childs.add(new RBConf());
             childs.add(new RBConsole());
             childs.add(new RBError());
+            childs.add(new RBXmlView());
         }
 
         @Override
@@ -111,7 +133,7 @@ public class ReportBreadcrumb extends BreadcrumbBarCallBack<ReportBreadcrumb.RBL
         }
         @Override
         public JComponent createView() {
-            return null;
+            return getConsole();
         }
     }
     public class RBConf extends RBLeaf
@@ -121,7 +143,7 @@ public class ReportBreadcrumb extends BreadcrumbBarCallBack<ReportBreadcrumb.RBL
         }
         @Override
         public JComponent createView() {
-            return null;
+            return getConfiguration();
         }
     }
     public class RBError extends RBLeaf
@@ -132,6 +154,16 @@ public class ReportBreadcrumb extends BreadcrumbBarCallBack<ReportBreadcrumb.RBL
         @Override
         public JComponent createView() {
             return null;
+        }
+    }
+    public class RBXmlView extends RBLeaf
+    {
+        {
+            Name=R().getString("XmlView");
+        }
+        @Override
+        public JComponent createView() {
+            return getXmlView();
         }
     }
 }

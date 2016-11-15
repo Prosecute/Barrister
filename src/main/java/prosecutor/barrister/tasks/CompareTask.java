@@ -15,6 +15,7 @@ import prosecutor.barrister.jaxb.*;
 import prosecutor.barrister.jaxb.TrialConfiguration;
 import prosecutor.barrister.languages.Language;
 import prosecutor.barrister.report.logger.L;
+import prosecutor.barrister.report.logger.Logger;
 import prosecutor.barrister.submissions.SubmissionManager;
 import prosecutor.barrister.submissions.SubmissionsLocation;
 import prosecutor.barrister.trial.Trial;
@@ -30,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 
+@Logger(name = "Task-Compare")
 public class CompareTask extends Task {
 
     private SubmissionManager submissionManager=new SubmissionManager();
@@ -49,7 +51,15 @@ public class CompareTask extends Task {
 
     public void setConfiguration(ConfigurationType configuration)
     {
-        this.configuration=configuration;
+        ConfigurationType type=new ConfigurationType();
+        type.setEntitiesLocations(configuration.getEntitiesLocations());
+        type.setOptions(configuration.getOptions());
+        type.setOutputEntityLocations(configuration.isOutputEntityLocations());
+        type.setOutputLocation(configuration.getOutputLocation());
+        type.setProjectName(configuration.getProjectName());
+        type.setTrials(configuration.getTrials());
+
+        this.configuration=type;
     }
 
     public Trial[] getTrials() {
@@ -76,23 +86,52 @@ public class CompareTask extends Task {
         return null;
 
     }
-    public Report getReport()
+    public Report generateReport()
     {
         Date d=new Date();
+        Report report=new Report();
+        report.setConsoleOutput(new Report.ConsoleOutput());
+        report.setConfiguration(configuration);
+        report.setMatches(new Report.Matches());
+        report.setErrors(new Report.Errors());
+        report.setTool(Barrister.NAME);
+        report.setVersion(Barrister.VERSION);
+        report.setGenerated(XMLGregorianCalendarImpl.createDateTime(d.getYear(),d.getMonth(),d.getDay(),d.getHours(),d.getMinutes(),d.getSeconds()));
+        L.setReport(report);
+        L.logInfo("Preparing for testing");
         //Prepare threading
         LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue();
         executorService=new ThreadPoolExecutor(Options.RUNTIME_THREAD_COUNT,Options.RUNTIME_THREAD_COUNT,0L, TimeUnit.MILLISECONDS,queue);
-        for(EntitiesLocation loc:configuration.getEntitiesLocations().getEntitiesLocation())
-            submissionManager.addLocation(new SubmissionsLocation(Paths.get(loc.getPath()),loc.isDirect(),true,loc.getMode()==TestMode.TEST));
+        for(EntitiesLocation loc:configuration.getEntitiesLocations().getEntitiesLocation()) {
+            if(!Paths.get(loc.getPath()).toFile().exists())
+            {
+                L.logWarn("Location: "+loc.getName()+"("+loc.getPath()+") doesn´t exist. Excluding from testing.");
+            }
+            else
+                submissionManager.addLocation(new SubmissionsLocation(Paths.get(loc.getPath()), loc.isDirect(), true, loc.getMode() == TestMode.TEST));
+        }
+        if(submissionManager.getSubmissionCount()==0)
+        {
+            L.logFatal("No submissions for testing. Shutting down.");
+            return report;
+        }
+        if(configuration.getTrials().getTrial().isEmpty())
+        {
+            L.logFatal("No trials found. Shutting down.");
+            return report;
+        }
 
         List<TrialConfiguration> list=configuration.getTrials().getTrial();
         List<Integer> usedID=new ArrayList<>();
         for(TrialConfiguration conf:list)
             if(conf.getTrialID()!=null)
-                if(usedID.contains(conf.getTrialID()))
+                if(usedID.contains(conf.getTrialID())) {
                     conf.setTrialID(null);
-                else
+                    L.logWarn("Multiple same trial ID found. Trying to repair.");
+                }
+                else {
                     usedID.add(conf.getTrialID());
+                }
         int c=0;
         for(TrialConfiguration conf:list)
         {
@@ -101,18 +140,10 @@ public class CompareTask extends Task {
             while(usedID.contains(c))
                 c++;
             conf.setTrialID(c);
+            L.logInfo("Adding trial ID");
         }
-
         trials=new Trial[configuration.getTrials().getTrial().size()];
-        Report report=new Report();
-        report.setConfiguration(configuration);
-        report.setMatches(new Report.Matches());
-        report.setErrors(new Report.Errors());
-        report.setTool(Barrister.NAME);
-        report.setVersion(Barrister.VERSION);
-        report.setGenerated(XMLGregorianCalendarImpl.createDateTime(d.getYear(),d.getMonth(),d.getDay(),d.getHours(),d.getMinutes(),d.getSeconds()));
         //TODO add EntityLocations
-        L.setReport(report);
 
         c=0;
         for(TrialConfiguration conf:configuration.getTrials().getTrial())
@@ -121,20 +152,22 @@ public class CompareTask extends Task {
             trials[c].setLanguage(Language.resolve(conf.getTrialType().getName(), conf.getTrialType().getVersion()));
             c++;
         }
+        L.logInfo("Executing trials");
         //Execute trials (synchronously)
         for(Trial trial:trials)
         {
             trial.execute(executorService,submissionManager);
         }
+        L.logInfo("Execution complete");
         Date d2=new Date();
-        //report.setGenerateTime(XMLGregorianCalendarImpl.createDateTime(1, 1, 1, d2.getHours()-d.getHours(), d2.getMinutes()-d.getMinutes(), d2.getSeconds()-d.getSeconds()));
+        report.setGenerateTime(XMLGregorianCalendarImpl.createDateTime(1, 1, 1, d2.getHours()-d.getHours(), d2.getMinutes()-d.getMinutes(), d2.getSeconds()-d.getSeconds()));
         return report;
     }
 
     @Override
     public void run() {
 
-        getReport();
+        generateReport();
         L.saveReport(Paths.get(configuration.getOutputLocation()));
 
     }
