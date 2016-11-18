@@ -11,9 +11,11 @@ package prosecutor.barrister.report.logger;
 
 import prosecutor.barrister.jaxb.ConsoleLine;
 import prosecutor.barrister.jaxb.Match;
+import prosecutor.barrister.jaxb.TokenCompareMatch;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.submissions.tokens.Token;
 import prosecutor.barrister.trial.Trial;
+import prosecutor.barrister.trial.mode.TokenCompare;
 import prosecutor.barrister.trial.tiling.GSTilingExtended;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -41,10 +43,11 @@ public class MatchLogger {
         Match.TrialMatches.TrialMatch trialMatch=new Match.TrialMatches.TrialMatch();
         trialMatch.setTrialID(trial.getTrialID());
         trialMatch.setConsoleOutput(console);
-        Match.TrialMatches.TrialMatch.TokenMatches tokenMatches=new Match.TrialMatches.TrialMatch.TokenMatches();
+        TokenCompareMatch tokenMatches=new TokenCompareMatch();
         for(GSTilingExtended.Match match:matches)
             tokenMatches.getRangeMatch().add(match.toRangeMatch());
-        trialMatch.setTokenMatches(tokenMatches);
+        trialMatch.setResults(new Match.TrialMatches.TrialMatch.Results());
+        trialMatch.getResults().setTokenCompare(tokenMatches);
         output.getTrialMatches().getTrialMatch().add(trialMatch);
         List<Token> list=subA.getSubmissionTokens().tokenList;
         boolean[] marked=new boolean[list.size()];

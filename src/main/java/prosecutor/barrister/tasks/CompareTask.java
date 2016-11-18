@@ -153,7 +153,7 @@ public class CompareTask extends Task {
         for(TrialConfiguration conf:configuration.getTrials().getTrial())
         {
             trials[c]=new Trial();
-            trials[c].setLanguage(Language.resolve(conf.getTrialType().getName(), conf.getTrialType().getVersion()));
+            trials[c].setLanguage(Language.resolve(conf.getTrialType().getSourceCode().getName(), conf.getTrialType().getSourceCode().getVersion()));
             c++;
         }
         L.logInfo(R().getString("infoExecute"));

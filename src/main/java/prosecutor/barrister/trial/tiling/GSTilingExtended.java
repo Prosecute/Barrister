@@ -11,6 +11,7 @@ package prosecutor.barrister.trial.tiling;
 
 
 import prosecutor.barrister.jaxb.Match;
+import prosecutor.barrister.jaxb.TokenCompareMatch;
 import prosecutor.barrister.report.logger.MatchLogger;
 import prosecutor.barrister.submissions.Submission;
 import prosecutor.barrister.submissions.tokens.Token;
@@ -96,9 +97,9 @@ initPhase:
             this.Length=length;
         }
 
-        public prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch toRangeMatch()
+        public TokenCompareMatch.RangeMatch toRangeMatch()
         {
-            prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch rangeMatch=new prosecutor.barrister.jaxb.Match.TrialMatches.TrialMatch.TokenMatches.RangeMatch();
+            TokenCompareMatch.RangeMatch rangeMatch=new TokenCompareMatch.RangeMatch();
             rangeMatch.setTokenLength(Length);
             rangeMatch.setTokenStartA(PositionTokenA);
             rangeMatch.setTokenStartB(PositionTokenB);

@@ -9,9 +9,7 @@ package prosecutor.barrister.templates;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-import prosecutor.barrister.jaxb.ConfigurationType;
-import prosecutor.barrister.jaxb.TrialCategory;
-import prosecutor.barrister.jaxb.TrialConfiguration;
+import prosecutor.barrister.jaxb.*;
 
 public class TemplateJava {
 
@@ -26,10 +24,12 @@ public class TemplateJava {
 
         TrialConfiguration trialConfiguration =new TrialConfiguration();
         TrialConfiguration.TrialType trialType=new TrialConfiguration.TrialType();
-        trialType.setCategory(TrialCategory.SOURCECODE);
-        trialType.setMode("TokenMatch");
-        trialType.setName("Java");
-        trialType.setVersion("1.8");
+        trialType.setSourceCode(new SourceCodeType());
+        trialType.getSourceCode().setMode(new SourceCodeType.Mode());
+        trialType.getSourceCode().getMode().setTokenCompareMode(new TokenCompareMode());
+        trialType.getSourceCode().getMode().getTokenCompareMode().setAlgorithm("GSTiling");
+        trialType.getSourceCode().setName("Java");
+        trialType.getSourceCode().setVersion("1.8");
         trialConfiguration.setTrialType(trialType);
         trialConfiguration.setTrialName("Source code trial - Java (Token match)");
 
