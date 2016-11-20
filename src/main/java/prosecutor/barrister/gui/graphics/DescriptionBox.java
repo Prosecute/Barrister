@@ -11,7 +11,7 @@ package prosecutor.barrister.gui.graphics;
 
 import javax.swing.*;
 
-public class PieChartDetailed extends JComponent {
+public class DescriptionBox extends JComponent {
 
     PieChart chart;
 }
