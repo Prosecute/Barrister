@@ -168,7 +168,6 @@ public class ProjectFrame extends JRibbonFrame {
 
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
         this.add(tabbedPane,BorderLayout.CENTER);
-        this.addComponentListener(new WindowSnapper());
 
     }
 
