@@ -43,8 +43,8 @@ import java.util.ResourceBundle;
 public class ProjectFrame extends JRibbonFrame {
 
     public static Locale CurrentLocale= Locale.ENGLISH;
-    private static Configuration Configuration;
-    private static Report report;
+    protected static Configuration Configuration;
+    protected static Report report;
     public static File ProjectFolder=null;
     public static File ConfigurationFile=null;
     public static Configuration Configuration()
@@ -80,35 +80,9 @@ public class ProjectFrame extends JRibbonFrame {
 
 
 
-        JRibbonBand band2 = new JRibbonBand(R().getString("Report"), null);
-        JCommandButton button1 = new JCommandButton(R().getString("Generate"), getResizableIconFromResource("oxygen/32x32/actions/run-build.png"));
-        button1.addActionListener(l -> {
-            CompareTask task=new CompareTask();
-            task.setConfiguration(Configuration);
-            report=task.generateReport();
-            report=report;
-        });
-        JCommandButton button2 = new JCommandButton(R().getString("CleanGenerate"), getResizableIconFromResource("oxygen/32x32/actions/run-build-clean.png"));
-        JCommandButton button3 = new JCommandButton(R().getString("Debug"), getResizableIconFromResource("oxygen/32x32/actions/debug-run.png"));
-        button3.addActionListener(l -> {
-            L.debug=true;
-            CompareTask task=new CompareTask();
-            task.setConfiguration(Configuration);
-            report=task.generateReport();
-            report=report;
-        });
-        JCommandButton button4 = new JCommandButton(R().getString("GenerateToFile"), getResizableIconFromResource("oxygen/32x32/actions/run-build-file.png"));
-        JCommandButton button5 = new JCommandButton(R().getString("GenerateConfigure"), getResizableIconFromResource("oxygen/32x32/actions/run-build-configure.png"));
-        band2.addCommandButton(button1,RibbonElementPriority.TOP);
-        band2.addCommandButton(button2,RibbonElementPriority.TOP);
-        band2.addCommandButton(button3,RibbonElementPriority.MEDIUM);
-        band2.addCommandButton(button4,RibbonElementPriority.MEDIUM);
-        band2.addCommandButton(button5,RibbonElementPriority.MEDIUM);
-        band2.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.Mirror(band2.getControlPanel()),
-                new IconRibbonBandResizePolicy(band2.getControlPanel())));
-        RibbonTask task2 = new RibbonTask(R().getString("Task"), band2);
-        this.getRibbon().addTask(task2);
+        RibbonHelper.createHomeTab(this);
+        RibbonHelper.createTaskTab(this);
+        RibbonHelper.createExternalDataTab(this);
         this.getRibbon().setApplicationMenu(new ProjectApplicationMenu(this));
         this.getRibbon().setApplicationIcon(getResizableIconFromResource("prosecutor.png"));
 
@@ -169,6 +143,13 @@ public class ProjectFrame extends JRibbonFrame {
         tabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
         this.add(tabbedPane,BorderLayout.CENTER);
 
+    }
+
+    public void generateReport()
+    {
+        CompareTask task=new CompareTask();
+        task.setConfiguration(Configuration);
+        report=task.generateReport();
     }
 
     public static Image getImageIO(String src)
