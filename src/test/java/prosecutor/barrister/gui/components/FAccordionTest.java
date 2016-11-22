@@ -9,8 +9,10 @@ package prosecutor.barrister.gui.components;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.gui.ProjectFrame;
 import prosecutor.barrister.gui.components.accordion.FAccordion;
 import prosecutor.barrister.gui.components.accordion.FAccordionButton;
+import prosecutor.barrister.gui.components.buttons.FButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,39 +31,10 @@ public class FAccordionTest {
         c.gridy=c.gridx=0;
 
         FAccordion accordion=new FAccordion("Title");
-        accordion.addButton(new FAccordionButton("Test"));
+        accordion.addButton(new FButton("sdad",ProjectFrame.getIconIO("oxygen/16x16/documentation.png")){{setStyle("green");}});
         pane.add(accordion,c);
         accordion=new FAccordion("Title2");
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
-        accordion.addButton(new FAccordionButton("Test2"));
+        accordion.addButton(new FButton("Test2"));
         c.gridy=1;
         pane.add(accordion,c);
         c.weighty=1;

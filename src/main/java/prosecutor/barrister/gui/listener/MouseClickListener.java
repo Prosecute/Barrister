@@ -12,24 +12,16 @@ package prosecutor.barrister.gui.listener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public abstract class ClickListener implements MouseListener {
+public interface MouseClickListener extends MouseListener {
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public default void mousePressed(MouseEvent e) { }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public default void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
+    public default void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public default void mouseExited(MouseEvent e) {}
 }

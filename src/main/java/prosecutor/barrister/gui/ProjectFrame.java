@@ -162,7 +162,7 @@ public class ProjectFrame extends JRibbonFrame {
             return null;
         }
     }
-    public static Icon getIconIO(String src)
+    public static ImageIcon getIconIO(String src)
     {
         return new ImageIcon(getImageIO(src));
     }

@@ -10,16 +10,12 @@ package prosecutor.barrister.gui.panels;
 
 
 import org.pushingpixels.flamingo.api.common.*;
-import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 import org.pushingpixels.flamingo.api.common.model.ActionToggleButtonModel;
 import org.pushingpixels.flamingo.api.ribbon.*;
 import org.pushingpixels.flamingo.api.ribbon.resize.CoreRibbonResizePolicies;
-import org.pushingpixels.flamingo.api.ribbon.resize.IconRibbonBandResizePolicy;
-import org.pushingpixels.substance.api.DecorationAreaType;
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import prosecutor.barrister.gui.ProjectFrame;
 import prosecutor.barrister.gui.components.LocationTable;
-import prosecutor.barrister.gui.listener.ClickListener;
+import prosecutor.barrister.gui.listener.MouseClickListener;
 import prosecutor.barrister.gui.tabbedPane.CustomTabbedPaneUI;
 import prosecutor.barrister.jaxb.EntitiesLocation;
 import prosecutor.barrister.jaxb.TestMode;
@@ -27,16 +23,10 @@ import prosecutor.barrister.jaxb.TestMode;
 import static prosecutor.barrister.gui.ProjectFrame.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.InputStream;
-import java.math.BigInteger;
 import java.util.*;
 import java.util.List;
 
@@ -129,7 +119,7 @@ public class TestedFilePanel extends JPanel {
         buttonMode = new JCommandToggleButton(R().getString("CompareOnly"), getResizableIconFromResource("oxygen/32x32/actions/zoom-next.png"));
 
 
-        buttonAddLocation.addMouseListener(new ClickListener() {
+        buttonAddLocation.addMouseListener(new MouseClickListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ProjectFrame.Configuration().getEntitiesLocations().getEntitiesLocation().add(new EntitiesLocation());
@@ -138,7 +128,7 @@ public class TestedFilePanel extends JPanel {
 
             }
         });
-        buttonDuplicate.addMouseListener(new ClickListener() {
+        buttonDuplicate.addMouseListener(new MouseClickListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(table.getSelectedRow()<0)
@@ -147,7 +137,7 @@ public class TestedFilePanel extends JPanel {
 
             }
         });
-        buttonRemoveLocation.addMouseListener(new ClickListener() {
+        buttonRemoveLocation.addMouseListener(new MouseClickListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (table.getSelectedRow() < 0)

@@ -9,6 +9,8 @@ package prosecutor.barrister.gui.components.accordion;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.gui.components.buttons.FButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -45,7 +47,7 @@ public class FAccordion extends JComponent {
         int ik=0;
     }
 
-    public void addButton(FAccordionButton button)
+    public void addButton(FButton button)
     {
         GridBagConstraints c=new GridBagConstraints();
         c.anchor=GridBagConstraints.FIRST_LINE_START;
