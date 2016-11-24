@@ -10,9 +10,10 @@ package prosecutor.barrister.gui.layouts;
 
 
 import prosecutor.barrister.gui.RibbonHelper;
+import prosecutor.barrister.gui.components.FComponent;
 
 public class MarginBox<T> {
-    protected Integer LEFT,TOP,RIGHT,BOTTOM;
+    public volatile Integer LEFT,TOP,RIGHT,BOTTOM;
     protected T parrent;
 
     public MarginBox()
@@ -65,5 +66,11 @@ public class MarginBox<T> {
     }
 
 
-
+    public T copy(MarginBox margin) {
+        this.LEFT=margin.LEFT;
+        this.TOP=margin.TOP;
+        this.RIGHT=margin.RIGHT;
+        this.BOTTOM=margin.BOTTOM;
+        return back();
+    }
 }

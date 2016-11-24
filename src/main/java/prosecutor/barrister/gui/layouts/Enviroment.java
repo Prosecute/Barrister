@@ -14,10 +14,13 @@ import prosecutor.barrister.gui.components.FComponent;
 import java.awt.*;
 
 public class Enviroment<T extends FComponent> {
+    public enum SizeToContent { Manual,Width,Height,WidthAndHeight;}
 
     private final T owner;
-    private MarginBox marginBox=new MarginBox();
-    private Integer width,height;
+    public final MarginBox<Enviroment<T>> Margin=new MarginBox();
+    public volatile Integer Width,Height;
+    public volatile Integer Order;
+    public volatile SizeToContent SizeToContent;
 
     public Enviroment(T owner)
     {
@@ -32,70 +35,49 @@ public class Enviroment<T extends FComponent> {
     public Rectangle getBounds(Dimension parent)
     {
         int x=0,y=0,w=0,h=0;
-        if(marginBox.LEFT!=null && marginBox.RIGHT!=null)
-        {   x=marginBox.LEFT;   w=parent.width-marginBox.RIGHT-x;  }
-        else if(marginBox.LEFT!=null)
-        {   x=marginBox.LEFT;   w=width==null?parent.width-x:width;}
-        else if(marginBox.RIGHT!=null)
-        {   x=width==null?0:parent.width-width-marginBox.RIGHT; w=width==null?parent.width-marginBox.RIGHT:width;}
+        if(Margin.LEFT!=null && Margin.RIGHT!=null)
+        {   x=Margin.LEFT;   w=parent.width-Margin.RIGHT-x;  }
+        else if(Margin.LEFT!=null)
+        {   x=Margin.LEFT;   w=Width==null?parent.width-x:Width;}
+        else if(Margin.RIGHT!=null)
+        {   x=Width==null?0:parent.width-Width-Margin.RIGHT; w=Width==null?parent.width-Margin.RIGHT:Width;}
         else
-        {   x=0; w=width==null?parent.width:width;}
+        {   x=0; w=Width==null?parent.width:Width;}
 
-        if(marginBox.TOP!=null && marginBox.BOTTOM!=null)
-        {   y=marginBox.TOP;   h=parent.height-marginBox.BOTTOM-y;  }
-        else if(marginBox.TOP!=null)
-        {   y=marginBox.TOP;   h=height==null?parent.height-y:height;}
-        else if(marginBox.BOTTOM!=null)
-        {   y=height==null?0:parent.height-height-marginBox.BOTTOM; h=height==null?parent.height-marginBox.BOTTOM:height;}
+        if(Margin.TOP!=null && Margin.BOTTOM!=null)
+        {   y=Margin.TOP;   h=parent.height-Margin.BOTTOM-y;  }
+        else if(Margin.TOP!=null)
+        {   y=Margin.TOP;   h=Height==null?parent.height-y:Height;}
+        else if(Margin.BOTTOM!=null)
+        {   y=Height==null?0:parent.height-Height-Margin.BOTTOM; h=Height==null?parent.height-Margin.BOTTOM:Height;}
         else
-        {   y=0; h=height==null?parent.height:height;}
+        {   y=0; h=Height==null?parent.height:Height;}
 
         return new Rectangle(x,y,w,h);
     }
 
-    public MarginBox<Enviroment<T>> getMargin()
-    {
-        return marginBox;
-    }
     public Enviroment<T> setMargin(MarginBox<Enviroment<T>> margin)
     {
         if(margin.parrent!=null && margin.parrent!=this)
             throw new RuntimeException(); //TODO
         margin.parrent=this;
-        this.marginBox=margin;
+        this.Margin.copy(margin);
         return this;
     }
     public Enviroment<T> setMargin(Integer left,Integer top,Integer right,Integer bottom)
     {
         MarginBox<Enviroment<T>> marginBox = new MarginBox<>(left, top, right, bottom);
-        marginBox.parrent=this;
-        this.marginBox=marginBox;
-        return this;
+        return setMargin(marginBox);
     }
     public Enviroment<T> setMargin(Integer horizontal,Integer vertical)
     {
         MarginBox<Enviroment<T>> marginBox = new MarginBox<>(horizontal,vertical);
-        marginBox.parrent=this;
-        this.marginBox=marginBox;
-        return this;
+        return setMargin(marginBox);
     }
     public Enviroment<T> setMargin(Integer margin)
     {
         MarginBox<Enviroment<T>> marginBox = new MarginBox<>(margin);
-        marginBox.parrent=this;
-        this.marginBox=marginBox;
-        return this;
-    }
-    public Enviroment<T> setWidth(Integer width)
-    {
-        this.width=width;
-        return this;
-    }
-
-    public Enviroment<T> setHeight(Integer height)
-    {
-        this.height=height;
-        return this;
+        return setMargin(marginBox);
     }
 
 
