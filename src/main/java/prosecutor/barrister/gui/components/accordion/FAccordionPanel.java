@@ -9,16 +9,13 @@ package prosecutor.barrister.gui.components.accordion;
 ///////////////////////////////////////////////////////////////////////////////
 
 
+import prosecutor.barrister.gui.components.panels.FPanel;
 import prosecutor.barrister.gui.components.panels.FSidePanel;
 
-public class FAccordionSidePanel extends FSidePanel {
+public class FAccordionPanel extends FPanel {
 
-    public FAccordionSidePanel(String title)
+    public FAccordionPanel()
     {
-        this();
-    }
-    public FAccordionSidePanel()
-    {
-        super();
+        this.setAbsoluteSize(250,300);
     }
 }

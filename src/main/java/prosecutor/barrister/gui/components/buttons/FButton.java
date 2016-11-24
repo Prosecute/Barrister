@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
 
@@ -16,8 +17,12 @@ public class FButton extends FComponent {
     protected Font font;
     protected ImageIcon icon;
     protected boolean Hovered;
-    protected boolean Active;
+    protected boolean Focus;
 
+    public String getText()
+    {
+        return Text;
+    }
 
     public FButton(){this("",null);}
     public FButton(String text) {this(text,null);}
@@ -25,16 +30,16 @@ public class FButton extends FComponent {
         Text=text;
         this.icon=icon;
         setFocusable(true);
-        addMouseEnteredListener(e -> { Hovered=true; repaint();});
-        addMouseExitedListener(e-> {Hovered=false; repaint();});
-        addMouseClickListener(e -> {requestFocus(); repaint();});
-        addFocusLostListener(e -> { repaint();});
+        addMouseEnteredListener(e -> { Hovered=true; revalidate(); repaint();});
+        addMouseExitedListener(e-> {Hovered=false; revalidate(); repaint();});
+        addMouseClickListener(e -> {if(e.getButton()!= MouseEvent.BUTTON1) return; Focus=true; requestFocus(); revalidate(); repaint();});
+        addFocusLostListener(e -> { Focus=false; revalidate(); repaint();});
         setButtonStyle(ButtonStyle.LIGHT);
         setButtonAlign(ButtonAlign.LEFT);
         setPreferredSize(new Dimension(150,150));
         setMinimumSize(new Dimension(150,150));
         setMaximumSize(new Dimension(150,150));
-        font=UIManager.getFont(this,"font.text.normal");
+        font=UIManager.getFont(this,"font.text.small");
         setAbsoluteSize(150,font.getSize()*3);
 
     }
@@ -84,11 +89,12 @@ public class FButton extends FComponent {
                 addPaintJob(0,g -> {
                     Rectangle bounds=getBounds();
                     g.setColor(UIManager.getColor(this,"color.hover"));
-                    if(Hovered)
-                        g.drawRect(bounds.x+1,bounds.y+1,bounds.width-2,bounds.height-2);
+                    if(Hovered) {
+                        g.drawRect(1, 1, bounds.width - 2, bounds.height - 2);
+                    }
                     g.setColor(UIManager.getColor(this,"color.active"));
-                    if(hasFocus())
-                        g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
+                    if(Focus)
+                        g.fillRect(0,0,bounds.width,bounds.height);
                 });
                 break;
             case HEAVY:
@@ -97,10 +103,10 @@ public class FButton extends FComponent {
                     Rectangle bounds=getBounds();
                     g.setColor(UIManager.getColor(this,"color.hover"));
                     if(Hovered)
-                        g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
+                        g.fillRect(0,0,bounds.width,bounds.height);
                     g.setColor(UIManager.getColor(this,"color.active"));
-                    if(hasFocus())
-                        g.fillRect(bounds.x,bounds.y,bounds.width,bounds.height);
+                    if(Focus)
+                        g.fillRect(0,0,bounds.width,bounds.height);
                 });
                 break;
         }

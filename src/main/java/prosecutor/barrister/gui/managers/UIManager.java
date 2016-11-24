@@ -24,8 +24,13 @@ public class UIManager {
         colors.put("green",new HashMap<>());
         Colors=colors;
         Fonts=fonts;
-        Font f=new Font("SansSerif",Font.PLAIN,16);
+        Font f=new Font("SansSerif",Font.PLAIN,12);
         setFont("default","font.text.normal",f);
+        f=new Font("SansSerif",Font.BOLD,10);
+        setFont("default","font.text.small",f);
+        f=new Font("Serif",Font.BOLD,14);
+        setFont("default","font.header.bold",f);
+        setColor("default","color.form.bg",new Color(255,255,255));
         setColor("b/w","color.hover",new Color(252,194,196));
         setColor("b/w","color.active",new Color(252,194,196));
         setColor("green","color.hover",new Color(128,199,125));
