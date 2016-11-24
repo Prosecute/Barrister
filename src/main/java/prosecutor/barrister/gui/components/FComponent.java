@@ -1,5 +1,7 @@
 package prosecutor.barrister.gui.components;
 
+import prosecutor.barrister.gui.layouts.Enviroment;
+import prosecutor.barrister.gui.layouts.Marginable;
 import prosecutor.barrister.gui.listener.*;
 
 import javax.swing.*;
@@ -10,65 +12,90 @@ import java.util.HashMap;
 /**
  * Created by Fry on 22.11.2016.
  */
-public class FComponent extends JComponent{
+public class FComponent<T extends FComponent> extends JComponent implements Marginable<T>{
     protected String Style= "default";
-
-    public FComponent()
+    protected boolean overlap=false;
+    private final Enviroment<T> enviroment;
     {
+        setOpaque(false);
+        enviroment=new Enviroment<T>((T)this);
     }
 
+    @Override
+    public boolean isOptimizedDrawingEnabled()
+    {
+        return !overlap;
+    }
 
-    public void addMouseClickListener(MouseClickListener mouseClickListener)
+    public T allowOverlap(boolean overlap)
+    {
+        this.overlap=overlap;
+        return getThis();
+    }
+
+    public T addMouseClickListener(MouseClickListener mouseClickListener)
     {
         addMouseListener(mouseClickListener);
+        return getThis();
     }
-    public void addMouseEnteredListener(MouseEnteredListener listener)
+    public T addMouseEnteredListener(MouseEnteredListener listener)
     {
         addMouseListener(listener);
+        return getThis();
     }
-    public void addMouseExitedListener(MouseExitedListener listener)
+    public T addMouseExitedListener(MouseExitedListener listener)
     {
         addMouseListener(listener);
+        return getThis();
     }
-    public void addFocusGainedListener(FocusGainedListener listener) {addFocusListener(listener);}
-    public void addFocusLostListener(FocusLostListener listener) {addFocusListener(listener);}
+    public T addFocusGainedListener(FocusGainedListener listener) {addFocusListener(listener); return getThis();}
+    public T addFocusLostListener(FocusLostListener listener) {addFocusListener(listener); return getThis();}
 
     private HashMap<Integer,ArrayList<PaintJob>> jobs=new HashMap<>();
-    public void addPaintJob(PaintJob job)
+    public T addPaintJob(PaintJob job)
     {
-        addPaintJob(1,job);
+        return addPaintJob(1,job);
     }
-    public void addPaintJob(int layer,PaintJob job)
+    public T addPaintJob(int layer,PaintJob job)
     {
         if(!jobs.containsKey(layer))
             jobs.put(layer,new ArrayList<>());
         jobs.get(layer).add(job);
+        return getThis();
     }
-    public void removePaintLayer(int layer)
+    public T removePaintLayer(int layer)
     {
         jobs.remove(layer);
+        return getThis();
+    }
+    public T getThis()
+    {
+        return (T)this;
     }
 
-    public void setStyle(String newStyle)
+    public T setStyle(String newStyle)
     {
         this.Style=newStyle;
         invalidate();
+        return getThis();
     }
     public String getStyle()
     {
         return Style;
     }
 
-    public void setAbsoluteSize(int w, int h)
+    public T setAbsoluteSize(int w, int h)
     {
         setAbsoluteSize(new Dimension(w,h));
+        return getThis();
     }
-    public void setAbsoluteSize(Dimension dim)
+    public T setAbsoluteSize(Dimension dim)
     {
         setSize(dim);
         setPreferredSize(dim);
         setMinimumSize(dim);
         setMaximumSize(dim);
+        return getThis();
     }
 
     @Override
@@ -78,5 +105,27 @@ public class FComponent extends JComponent{
             for(PaintJob job:jobList)
                 job.paint(g);
         g.dispose();
+    }
+
+    @Override
+    public Enviroment<T> getEnv() {
+        return enviroment;
+    }
+
+    @Override
+    public Component add(Component comp) {
+        addImpl(comp, null, 0);
+        return comp;
+    }
+
+    @Override
+    public Component add(String name, Component comp) {
+        addImpl(comp, name, 0);
+        return comp;
+    }
+    @Override
+    public Component add(Component comp, int index) {
+        addImpl(comp, null, index);
+        return comp;
     }
 }
