@@ -1,0 +1,21 @@
+<Configuration xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+               xmlns="http://prosecute.github.io/XMLSchema"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="https://prosecute.github.io/XMLSchema/BarristerInputSchema.xsd"
+               outputLocation="output.xml"
+               outputSourceCode="false"
+               rootDirectory="/">
+    <EntitiesLocations>
+        <EntitiesLocation path="submissions" direct="false"/>
+    </EntitiesLocations>
+    <Trials>
+        <Trial trialName="MainTrial" sensitivity="1" minMatch="20">
+            <TrialType>
+                <SourceCode name="java" version="1.8">
+                    <Mode><TokenCompareMode/></Mode>
+                </SourceCode>
+            </TrialType>
+            <Language name="java" version="1.8"/>
+        </Trial>
+    </Trials>
+</Configuration>

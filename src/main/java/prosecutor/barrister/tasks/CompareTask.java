@@ -40,6 +40,7 @@ public class CompareTask extends Task {
 
     private SubmissionManager submissionManager=new SubmissionManager();
     ConfigurationType configuration;
+    File configurationFile;
     private Trial[] trials;
 
     private ExecutorService executorService;
@@ -106,6 +107,15 @@ public class CompareTask extends Task {
         //Prepare threading
         LinkedBlockingQueue<Runnable> queue=new LinkedBlockingQueue();
         executorService=new ThreadPoolExecutor(Options.RUNTIME_THREAD_COUNT,Options.RUNTIME_THREAD_COUNT,0L, TimeUnit.MILLISECONDS,queue);
+        if(configuration.getRootDirectory()!=null)
+        {
+            if(configuration.getRootDirectory().startsWith("/"))
+            {
+                System.setProperty("user.dir",new File(configurationFile.getAbsolutePath(),configuration.getRootDirectory()).getAbsolutePath());
+            }
+            else
+                System.setProperty("user.dir",configuration.getRootDirectory());
+        }
         for(EntitiesLocation loc:configuration.getEntitiesLocations().getEntitiesLocation()) {
             if(!Paths.get(loc.getPath()).toFile().exists())
             {
@@ -193,7 +203,8 @@ public class CompareTask extends Task {
                     try {
                         JAXBContext jc = JAXBContext.newInstance(ConfigurationType.class);
                         Unmarshaller unmarshaller = jc.createUnmarshaller();
-                        configuration = (ConfigurationType) unmarshaller.unmarshal(new File(param));
+                        configurationFile=new File(param);
+                        configuration = (ConfigurationType) unmarshaller.unmarshal(configurationFile);
                     } catch (JAXBException e) {
                         e.printStackTrace();
                     }
