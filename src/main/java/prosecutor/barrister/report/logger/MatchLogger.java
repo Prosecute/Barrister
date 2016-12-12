@@ -20,6 +20,7 @@ import prosecutor.barrister.trial.tiling.GSTilingExtended;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -40,6 +41,7 @@ public class MatchLogger {
     public void logMatch(Stack<GSTilingExtended.Match> matches,Submission subA,Submission subB)
     {
         Match output=L.findOrCreateMatch(subA.getSubmissionLocationID(),subB.getSubmissionLocationID(),subA.getLocation().toString(),subB.getLocation().toString());
+
         Match.TrialMatches.TrialMatch trialMatch=new Match.TrialMatches.TrialMatch();
         trialMatch.setTrialID(trial.getTrialID());
         trialMatch.setConsoleOutput(console);
@@ -58,11 +60,13 @@ public class MatchLogger {
                 marked[i]=true;
             }
         }
-        int mark=0;
+        double mark=0;
         for(boolean b:marked)
             if(b)mark++;
-        int res=(mark/list.size())*100;
+        double res=(mark/list.size())*100;
+        output.setMatch(new BigDecimal(res));
         console=new Match.TrialMatches.TrialMatch.ConsoleOutput();
+
     }
 
     public void log(LoggerLevel level,String msg)

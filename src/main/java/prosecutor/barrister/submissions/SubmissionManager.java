@@ -18,8 +18,6 @@ import java.util.List;
 
 public class SubmissionManager implements PageProviderFiltered<Submission,SubmissionLocationFilter> {
 
-    private int testedSubmissions=0;
-    private int comparedSubmissions=0;
     protected List<SubmissionsLocation> locationList=new ArrayList<>();
 
     public void addLocation(SubmissionsLocation location)
@@ -34,13 +32,11 @@ public class SubmissionManager implements PageProviderFiltered<Submission,Submis
 
     public int getSubmissionCount()
     {
-        return testedSubmissions+comparedSubmissions;
+        int c=0;
+        for(SubmissionsLocation loc:locationList)
+            c+=loc.getSubmissionsPaths().size();
+        return c;
     }
-    public int getTestedSubmissionCount()
-    {
-        return testedSubmissions;
-    }
-    public int getComparedSubmissionCount() { return comparedSubmissions; }
 
 
     @Override

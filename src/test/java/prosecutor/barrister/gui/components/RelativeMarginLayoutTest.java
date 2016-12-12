@@ -24,7 +24,7 @@ public class RelativeMarginLayoutTest {
         FPanel panel=new FPanel();
 
         panel.setLayout(new RelativeMarginLayout(RelativeMarginLayout.Orientation.VERTICAL));
-        panel.allowOverlap(true);
+        panel.allowOverlap(true);/*
         panel.add(new FComponent()
                 .getEnv()
                 .setMargin(10,10,10,null)
@@ -55,6 +55,6 @@ public class RelativeMarginLayoutTest {
         form.setBounds(250,250,400,400);
         form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         form.getContentPane().add(panel);
-        form.setVisible(true);
+        form.setVisible(true);*/
     }
 }
